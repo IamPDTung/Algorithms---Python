@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Big-O Cheat Sheet</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      fontFamily: {
+        mono: ['JetBrains Mono', 'Fira Code', 'Consolas', 'monospace'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+      }
+    }
+  }
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  table { border-collapse: collapse; }
+  th, td { padding: 0.65rem 0.85rem; text-align: center; white-space: nowrap; }
+  th { font-weight: 600; font-size: 0.8rem; letter-spacing: 0.025em; text-transform: uppercase; }
+  td { font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace; font-weight: 600; font-size: 0.85rem; }
+  .bg-o1  { background: #22c55e; color: #052e16; }
+  .bg-ologn { background: #86efac; color: #14532d; }
+  .bg-on { background: #facc15; color: #422006; }
+  .bg-onlogn { background: #fb923c; color: #431407; }
+  .bg-on2 { background: #ef4444; color: #450a0a; }
+  .bg-o2n { background: #a855f7; color: #2e1065; }
+  .bg-onfact { background: #6366f1; color: #1e1b4b; }
+  .dark .bg-o1  { background: #166534; color: #bbf7d0; }
+  .dark .bg-ologn { background: #14532d; color: #bbf7d0; }
+  .dark .bg-on { background: #713f12; color: #fef08a; }
+  .dark .bg-onlogn { background: #7c2d12; color: #fed7aa; }
+  .dark .bg-on2 { background: #7f1d1d; color: #fecaca; }
+  .dark .bg-o2n { background: #581c87; color: #e9d5ff; }
+  .dark .bg-onfact { background: #3730a3; color: #c7d2fe; }
+  .legend-dot { width: 12px; height: 12px; border-radius: 4px; flex-shrink: 0; }
+  .ds-col { min-width: 130px; text-align: left !important; font-family: 'Inter', system-ui, sans-serif !important; font-weight: 500 !important; }
+  .glossary-link { color: #6366f1; text-decoration: underline; text-underline-offset: 2px; }
+  .glossary-link:hover { color: #4f46e5; }
+  .dark .glossary-link { color: #a5b4fc; }
+  .dark .glossary-link:hover { color: #c7d2fe; }
+</style>
+</head>
+<body class="bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 font-sans transition-colors duration-300">
+
+<header class="border-b border-gray-200 dark:border-gray-800 sticky top-0 z-50 bg-white/80 dark:bg-gray-950/80 backdrop-blur-lg">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+    <div>
+      <h1 class="text-xl font-extrabold tracking-tight" data-i18n-html="title">Big-O <span class="text-emerald-500">Cheat Sheet</span></h1>
+      <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5" data-i18n="subtitle">Know Thy Complexities!</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <button id="lang-btn"
+        class="px-3 py-2 rounded-xl text-xs font-bold bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors flex items-center gap-1"
+        aria-label="Switch language">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
+        </svg>
+        <span id="lang-label">EN</span>
+      </button>
+      <button id="theme-btn"
+        class="p-2.5 rounded-xl bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+        aria-label="Toggle dark mode">
+        <svg class="w-5 h-5 hidden dark:block text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+        </svg>
+        <svg class="w-5 h-5 block dark:hidden text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+
+<!-- ======== COMPLEXITY CHART ======== -->
+<section>
+  <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+    <span class="w-1.5 h-8 bg-emerald-500 rounded-full"></span>
+    <span data-i18n="chartTitle">Big-O Complexity Chart</span>
+  </h2>
+  <div class="flex flex-wrap gap-3 mb-5">
+    <div class="flex items-center gap-1.5 text-xs font-semibold"><span class="legend-dot bg-o1"></span> O(1) <span data-i18n="legendExcellent">Excellent</span></div>
+    <div class="flex items-center gap-1.5 text-xs font-semibold"><span class="legend-dot bg-ologn"></span> O(log n) <span data-i18n="legendGood">Good</span></div>
+    <div class="flex items-center gap-1.5 text-xs font-semibold"><span class="legend-dot bg-on"></span> O(n) <span data-i18n="legendFair">Fair</span></div>
+    <div class="flex items-center gap-1.5 text-xs font-semibold"><span class="legend-dot bg-onlogn"></span> O(n log n) <span data-i18n="legendBad">Bad</span></div>
+    <div class="flex items-center gap-1.5 text-xs font-semibold"><span class="legend-dot bg-on2"></span> O(n²) <span data-i18n="legendHorrible">Horrible</span></div>
+    <div class="flex items-center gap-1.5 text-xs font-semibold"><span class="legend-dot bg-o2n"></span> O(2ⁿ) <span data-i18n="legendHorrible">Horrible</span></div>
+    <div class="flex items-center gap-1.5 text-xs font-semibold"><span class="legend-dot bg-onfact"></span> O(n!) <span data-i18n="legendHorrible">Horrible</span></div>
+  </div>
+  <div class="bg-gray-50 dark:bg-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-800">
+    <div class="flex items-end justify-between h-48 gap-3">
+      <div class="flex-1 flex flex-col justify-end h-full"><div class="bg-o1 rounded-t-lg flex-1 transition-all duration-500 hover:opacity-80" style="height:8%"><div class="text-center -mt-6 font-bold text-xs">O(1)</div></div></div>
+      <div class="flex-1 flex flex-col justify-end h-full"><div class="bg-ologn rounded-t-lg flex-1 transition-all duration-500 hover:opacity-80" style="height:18%"><div class="text-center -mt-6 font-bold text-xs">O(log n)</div></div></div>
+      <div class="flex-1 flex flex-col justify-end h-full"><div class="bg-on rounded-t-lg flex-1 transition-all duration-500 hover:opacity-80" style="height:28%"><div class="text-center -mt-6 font-bold text-xs">O(n)</div></div></div>
+      <div class="flex-1 flex flex-col justify-end h-full"><div class="bg-onlogn rounded-t-lg flex-1 transition-all duration-500 hover:opacity-80" style="height:42%"><div class="text-center -mt-6 font-bold text-xs">O(n log n)</div></div></div>
+      <div class="flex-1 flex flex-col justify-end h-full"><div class="bg-on2 rounded-t-lg flex-1 transition-all duration-500 hover:opacity-80" style="height:60%"><div class="text-center -mt-6 font-bold text-xs">O(n²)</div></div></div>
+      <div class="flex-1 flex flex-col justify-end h-full"><div class="bg-o2n rounded-t-lg flex-1 transition-all duration-500 hover:opacity-80" style="height:82%"><div class="text-center -mt-6 font-bold text-xs">O(2ⁿ)</div></div></div>
+      <div class="flex-1 flex flex-col justify-end h-full"><div class="bg-onfact rounded-t-lg flex-1 transition-all duration-500 hover:opacity-80" style="height:100%"><div class="text-center -mt-6 font-bold text-xs">O(n!)</div></div></div>
+    </div>
+    <div class="flex justify-between mt-2 mb-8 text-xs text-gray-500 dark:text-gray-400">
+      <span data-i18n="chartX">Operations</span>
+      <span data-i18n="chartY">Elements →</span>
+    </div>
+    <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
+      <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-3">Growth Comparison &mdash; log scale</h3>
+      <canvas id="complexityChart" class="w-full" height="400"></canvas>
+      <div class="flex justify-between mt-2 text-xs text-gray-500 dark:text-gray-400">
+        <span>Operations (log₁₀)</span>
+        <span>n →</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== DATA STRUCTURES ======== -->
+<section>
+  <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+    <span class="w-1.5 h-8 bg-sky-500 rounded-full"></span>
+    <span data-i18n="dsTitle">Common Data Structure Operations</span>
+  </h2>
+  <div class="overflow-x-auto rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900">
+    <table class="w-full">
+      <thead class="bg-gray-100 dark:bg-gray-800">
+        <tr>
+          <th class="ds-col" rowspan="2" data-i18n="dsCol">Data Structure</th>
+          <th colspan="4" class="text-emerald-600 dark:text-emerald-400" data-i18n="dsAverage">Average</th>
+          <th colspan="4" class="text-red-500 dark:text-red-400" data-i18n="dsWorstLabel">Worst</th>
+          <th rowspan="2" class="text-purple-600 dark:text-purple-400"><span data-i18n="dsSpace">Space</span><br><span data-i18n="dsWorst">Worst</span></th>
+        </tr>
+        <tr>
+          <th data-i18n="dsAccess">Access</th><th data-i18n="dsSearch">Search</th><th data-i18n="dsInsert">Insert</th><th data-i18n="dsDelete">Delete</th>
+          <th data-i18n="dsAccess">Access</th><th data-i18n="dsSearch">Search</th><th data-i18n="dsInsert">Insert</th><th data-i18n="dsDelete">Delete</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200 dark:divide-gray-800">
+        <tr class="hover:bg-gray-100 dark:hover:bg-gray-800/50"><td class="ds-col" data-ds-i="0">Array</td><td class="bg-o1">Θ(1)</td><td class="bg-on">Θ(n)</td><td class="bg-on">Θ(n)</td><td class="bg-on">Θ(n)</td><td class="bg-o1">O(1)</td><td class="bg-on">O(n)</td><td class="bg-on">O(n)</td><td class="bg-on">O(n)</td><td class="bg-on">O(n)</td></tr>
+        <tr class="hover:bg-gray-100 dark:hover:bg-gray-800/50"><td class="ds-col" data-ds-i="1">Stack</td><td class="bg-on">Θ(n)</td><td class="bg-on">Θ(n)</td><td class="bg-o1">Θ(1)</td><td class="bg-o1">Θ(1)</td><td class="bg-on">O(n)</td><td class="bg-on">O(n)</td><td class="bg-o1">O(1)</td><td class="bg-o1">O(1)</td><td class="bg-on">O(n)</td></tr>
+        <tr class="hover:bg-gray-100 dark:hover:bg-gray-800/50"><td class="ds-col" data-ds-i="2">Queue</td><td class="bg-on">Θ(n)</td><td class="bg-on">Θ(n)</td><td class="bg-o1">Θ(1)</td><td class="bg-o1">Θ(1)</td><td class="bg-on">O(n)</td><td class="bg-on">O(n)</td><td class="bg-o1">O(1)</td><td class="bg-o1">O(1)</td><td class="bg-on">O(n)</td></tr>
+        <tr class="hover:bg-gray-100 dark:hover:bg-gray-800/50"><td class="ds-col" data-ds-i="3">Singly-Linked List</td><td class="bg-on">Θ(n)</td><td class="bg-on">Θ(n)</td><td class="bg-o1">Θ(1)</td><td class="bg-o1">Θ(1)</td><td class="bg-on">O(n)</td><td class="bg-on">O(n)</td><td class="bg-o1">O(1)</td><td class="bg-o1">O(1)</td><td class="bg-on">O(n)</td></tr>
+        <tr class="hover:bg-gray-100 dark:hover:bg-gray-800/50"><td class="ds-col" data-ds-i="4">Doubly-Linked List</td><td class="bg-on">Θ(n)</td><td class="bg-on">Θ(n)</td><td class="bg-o1">Θ(1)</td><td class="bg-o1">Θ(1)</td><td class="bg-on">O(n)</td><td class="bg-on">O(n)</td><td class="bg-o1">O(1)</td><td class="bg-o1">O(1)</td><td class="bg-on">O(n)</td></tr>
+        <tr class="hover:bg-gray-100 dark:hover:bg-gray-800/50"><td class="ds-col" data-ds-i="5">Skip List</td><td class="bg-ologn">Θ(log n)</td><td class="bg-ologn">Θ(log n)</td><td class="bg-ologn">Θ(log n)</td><td class="bg-ologn">Θ(log n)</td><td class="bg-on">O(n)</td><td class="bg-on">O(n)</td><td class="bg-on">O(n)</td><td class="bg-on">O(n)</td><td class="bg-onlogn">O(n log n)</td></tr>
+        <tr class="hover:bg-gray-100 dark:hover:bg-gray-800/50"><td class="ds-col" data-ds-i="6">Hash Table</td><td class="text-gray-400">—</td><td class="bg-o1">Θ(1)</td><td class="bg-o1">Θ(1)</td><td class="bg-o1">Θ(1)</td><td class="text-gray-400">—</td><td class="bg-on">O(n)</td><td class="bg-on">O(n)</td><td class="bg-on">O(n)</td><td class="bg-on">O(n)</td></tr>
+        <tr class="hover:bg-gray-100 dark:hover:bg-gray-800/50"><td class="ds-col" data-ds-i="7">Binary Search Tree</td><td class="bg-ologn">Θ(log n)</td><td class="bg-ologn">Θ(log n)</td><td class="bg-ologn">Θ(log n)</td><td class="bg-ologn">Θ(log n)</td><td class="bg-on">O(n)</td><td class="bg-on">O(n)</td><td class="bg-on">O(n)</td><td class="bg-on">O(n)</td><td class="bg-on">O(n)</td></tr>
+        <tr class="hover:bg-gray-100 dark:hover:bg-gray-800/50"><td class="ds-col" data-ds-i="8">Cartesian Tree</td><td class="text-gray-400">—</td><td class="bg-ologn">Θ(log n)</td><td class="bg-ologn">Θ(log n)</td><td class="bg-ologn">Θ(log n)</td><td class="text-gray-400">—</td><td class="bg-on">O(n)</td><td class="bg-on">O(n)</td><td class="bg-on">O(n)</td><td class="bg-on">O(n)</td></tr>
+        <tr class="hover:bg-gray-100 dark:hover:bg-gray-800/50"><td class="ds-col" data-ds-i="9">B-Tree</td><td class="bg-ologn">Θ(log n)</td><td class="bg-ologn">Θ(log n)</td><td class="bg-ologn">Θ(log n)</td><td class="bg-ologn">Θ(log n)</td><td class="bg-ologn">O(log n)</td><td class="bg-ologn">O(log n)</td><td class="bg-ologn">O(log n)</td><td class="bg-ologn">O(log n)</td><td class="bg-on">O(n)</td></tr>
+        <tr class="hover:bg-gray-100 dark:hover:bg-gray-800/50"><td class="ds-col" data-ds-i="10">Red-Black Tree</td><td class="bg-ologn">Θ(log n)</td><td class="bg-ologn">Θ(log n)</td><td class="bg-ologn">Θ(log n)</td><td class="bg-ologn">Θ(log n)</td><td class="bg-ologn">O(log n)</td><td class="bg-ologn">O(log n)</td><td class="bg-ologn">O(log n)</td><td class="bg-ologn">O(log n)</td><td class="bg-on">O(n)</td></tr>
+        <tr class="hover:bg-gray-100 dark:hover:bg-gray-800/50"><td class="ds-col" data-ds-i="11">Splay Tree</td><td class="text-gray-400">—</td><td class="bg-ologn">Θ(log n)</td><td class="bg-ologn">Θ(log n)</td><td class="bg-ologn">Θ(log n)</td><td class="text-gray-400">—</td><td class="bg-ologn">O(log n)</td><td class="bg-ologn">O(log n)</td><td class="bg-ologn">O(log n)</td><td class="bg-on">O(n)</td></tr>
+        <tr class="hover:bg-gray-100 dark:hover:bg-gray-800/50"><td class="ds-col" data-ds-i="12">AVL Tree</td><td class="bg-ologn">Θ(log n)</td><td class="bg-ologn">Θ(log n)</td><td class="bg-ologn">Θ(log n)</td><td class="bg-ologn">Θ(log n)</td><td class="bg-ologn">O(log n)</td><td class="bg-ologn">O(log n)</td><td class="bg-ologn">O(log n)</td><td class="bg-ologn">O(log n)</td><td class="bg-on">O(n)</td></tr>
+        <tr class="hover:bg-gray-100 dark:hover:bg-gray-800/50"><td class="ds-col" data-ds-i="13">KD Tree</td><td class="bg-ologn">Θ(log n)</td><td class="bg-ologn">Θ(log n)</td><td class="bg-ologn">Θ(log n)</td><td class="bg-ologn">Θ(log n)</td><td class="bg-on">O(n)</td><td class="bg-on">O(n)</td><td class="bg-on">O(n)</td><td class="bg-on">O(n)</td><td class="bg-on">O(n)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ======== SORTING ALGORITHMS ======== -->
+<section>
+  <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+    <span class="w-1.5 h-8 bg-amber-500 rounded-full"></span>
+    <span data-i18n="sortTitle">Array Sorting Algorithms</span>
+  </h2>
+  <div class="overflow-x-auto rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900">
+    <table class="w-full">
+      <thead class="bg-gray-100 dark:bg-gray-800">
+        <tr>
+          <th class="ds-col" data-i18n="sortCol">Algorithm</th>
+          <th class="text-emerald-600 dark:text-emerald-400" data-i18n="sortBest">Best</th>
+          <th class="text-amber-500 dark:text-amber-400" data-i18n="sortAverage">Average</th>
+          <th class="text-red-500 dark:text-red-400" data-i18n="sortWorst">Worst</th>
+          <th class="text-purple-600 dark:text-purple-400" data-i18n="sortSpace">Space Worst</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200 dark:divide-gray-800">
+        <tr class="hover:bg-gray-100 dark:hover:bg-gray-800/50"><td class="ds-col" data-sort-i="0">Quicksort</td><td class="bg-onlogn">Ω(n log n)</td><td class="bg-onlogn">Θ(n log n)</td><td class="bg-on2">O(n²)</td><td class="bg-ologn">O(log n)</td></tr>
+        <tr class="hover:bg-gray-100 dark:hover:bg-gray-800/50"><td class="ds-col" data-sort-i="1">Mergesort</td><td class="bg-onlogn">Ω(n log n)</td><td class="bg-onlogn">Θ(n log n)</td><td class="bg-onlogn">O(n log n)</td><td class="bg-on">O(n)</td></tr>
+        <tr class="hover:bg-gray-100 dark:hover:bg-gray-800/50"><td class="ds-col" data-sort-i="2">Timsort</td><td class="bg-on">Ω(n)</td><td class="bg-onlogn">Θ(n log n)</td><td class="bg-onlogn">O(n log n)</td><td class="bg-on">O(n)</td></tr>
+        <tr class="hover:bg-gray-100 dark:hover:bg-gray-800/50"><td class="ds-col" data-sort-i="3">Heapsort</td><td class="bg-onlogn">Ω(n log n)</td><td class="bg-onlogn">Θ(n log n)</td><td class="bg-onlogn">O(n log n)</td><td class="bg-o1">O(1)</td></tr>
+        <tr class="hover:bg-gray-100 dark:hover:bg-gray-800/50"><td class="ds-col" data-sort-i="4">Bubble Sort</td><td class="bg-on">Ω(n)</td><td class="bg-on2">Θ(n²)</td><td class="bg-on2">O(n²)</td><td class="bg-o1">O(1)</td></tr>
+        <tr class="hover:bg-gray-100 dark:hover:bg-gray-800/50"><td class="ds-col" data-sort-i="5">Insertion Sort</td><td class="bg-on">Ω(n)</td><td class="bg-on2">Θ(n²)</td><td class="bg-on2">O(n²)</td><td class="bg-o1">O(1)</td></tr>
+        <tr class="hover:bg-gray-100 dark:hover:bg-gray-800/50"><td class="ds-col" data-sort-i="6">Selection Sort</td><td class="bg-on2">Ω(n²)</td><td class="bg-on2">Θ(n²)</td><td class="bg-on2">O(n²)</td><td class="bg-o1">O(1)</td></tr>
+        <tr class="hover:bg-gray-100 dark:hover:bg-gray-800/50"><td class="ds-col" data-sort-i="7">Tree Sort</td><td class="bg-onlogn">Ω(n log n)</td><td class="bg-onlogn">Θ(n log n)</td><td class="bg-on2">O(n²)</td><td class="bg-on">O(n)</td></tr>
+        <tr class="hover:bg-gray-100 dark:hover:bg-gray-800/50"><td class="ds-col" data-sort-i="8">Shell Sort</td><td class="bg-onlogn">Ω(n log n)</td><td class="bg-onlogn">Θ(n (log n)²)</td><td class="bg-onlogn">O(n (log n)²)</td><td class="bg-o1">O(1)</td></tr>
+        <tr class="hover:bg-gray-100 dark:hover:bg-gray-800/50"><td class="ds-col" data-sort-i="9">Bucket Sort</td><td class="bg-ologn">Ω(n+k)</td><td class="bg-ologn">Θ(n+k)</td><td class="bg-on2">O(n²)</td><td class="bg-on">O(n)</td></tr>
+        <tr class="hover:bg-gray-100 dark:hover:bg-gray-800/50"><td class="ds-col" data-sort-i="10">Radix Sort</td><td class="bg-ologn">Ω(nk)</td><td class="bg-ologn">Θ(nk)</td><td class="bg-ologn">O(nk)</td><td class="bg-ologn">O(n+k)</td></tr>
+        <tr class="hover:bg-gray-100 dark:hover:bg-gray-800/50"><td class="ds-col" data-sort-i="11">Counting Sort</td><td class="bg-ologn">Ω(n+k)</td><td class="bg-ologn">Θ(n+k)</td><td class="bg-ologn">O(n+k)</td><td class="bg-ologn">O(k)</td></tr>
+        <tr class="hover:bg-gray-100 dark:hover:bg-gray-800/50"><td class="ds-col" data-sort-i="12">Cubesort</td><td class="bg-on">Ω(n)</td><td class="bg-onlogn">Θ(n log n)</td><td class="bg-onlogn">O(n log n)</td><td class="bg-on">O(n)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ======== GLOSSARY ======== -->
+<section>
+  <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+    <span class="w-1.5 h-8 bg-violet-500 rounded-full"></span>
+    <span data-i18n="glossaryTitle">Glossary / Chú thích</span>
+  </h2>
+  <p class="text-sm text-gray-500 dark:text-gray-400 mb-6" data-i18n="glossaryIntro">Key terms and concepts used throughout this cheat sheet.</p>
+
+  <div class="grid md:grid-cols-2 gap-5">
+    <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-200 dark:border-gray-800" data-gloss-i="0">
+      <h3 class="font-bold text-base mb-1" data-gloss-title>Big-O Notation</h3>
+      <p class="text-xs text-gray-400 font-medium mb-2" data-gloss-sub>Asymptotic upper bound</p>
+      <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed" data-gloss-desc>Mathematical notation describing the <strong>upper bound</strong> of an algorithm's complexity as input size grows to infinity. Used to classify algorithms by their worst-case time or space requirements.</p>
+      <a href="https://en.wikipedia.org/wiki/Big_O_notation" target="_blank" rel="noopener" class="glossary-link">Wikipedia &nearr;</a>
+    </div>
+    <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-200 dark:border-gray-800" data-gloss-i="1">
+      <h3 class="font-bold text-base mb-1" data-gloss-title>Time Complexity</h3>
+      <p class="text-xs text-gray-400 font-medium mb-2" data-gloss-sub>Computational time</p>
+      <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed" data-gloss-desc>The amount of time an algorithm needs to complete, expressed as a function of input size (n). Typically measured by counting elementary operations.</p>
+      <a href="https://en.wikipedia.org/wiki/Time_complexity" target="_blank" rel="noopener" class="glossary-link">Wikipedia &nearr;</a>
+    </div>
+    <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-200 dark:border-gray-800" data-gloss-i="2">
+      <h3 class="font-bold text-base mb-1" data-gloss-title>Space Complexity</h3>
+      <p class="text-xs text-gray-400 font-medium mb-2" data-gloss-sub>Memory usage</p>
+      <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed" data-gloss-desc>The amount of <strong>extra memory</strong> an algorithm uses during execution, excluding the memory occupied by the input data itself.</p>
+      <a href="https://en.wikipedia.org/wiki/Space_complexity" target="_blank" rel="noopener" class="glossary-link">Wikipedia &nearr;</a>
+    </div>
+    <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-200 dark:border-gray-800" data-gloss-i="3">
+      <h3 class="font-bold text-base mb-1" data-gloss-title>Ω(n) — Omega</h3>
+      <p class="text-xs text-gray-400 font-medium mb-2" data-gloss-sub>Best case (lower bound)</p>
+      <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed" data-gloss-desc>Represents the <strong>best case</strong> scenario — the minimum running time achievable with ideal input.</p>
+      <a href="https://en.wikipedia.org/wiki/Big_O_notation#Big_Omega_notation" target="_blank" rel="noopener" class="glossary-link">Wikipedia &nearr;</a>
+    </div>
+    <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-200 dark:border-gray-800" data-gloss-i="4">
+      <h3 class="font-bold text-base mb-1" data-gloss-title>Θ(n) — Theta</h3>
+      <p class="text-xs text-gray-400 font-medium mb-2" data-gloss-sub>Average case (tight bound)</p>
+      <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed" data-gloss-desc>Represents the <strong>average case</strong> — a tight bound both above and below. Reflects typical runtime with random data.</p>
+      <a href="https://en.wikipedia.org/wiki/Big_O_notation#Big_Theta_notation" target="_blank" rel="noopener" class="glossary-link">Wikipedia &nearr;</a>
+    </div>
+    <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-200 dark:border-gray-800" data-gloss-i="5">
+      <h3 class="font-bold text-base mb-1" data-gloss-title>O(n) — Big-O</h3>
+      <p class="text-xs text-gray-400 font-medium mb-2" data-gloss-sub>Worst case (upper bound)</p>
+      <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed" data-gloss-desc>Represents the <strong>worst case</strong> — the maximum time an algorithm could take. This is the most common metric for evaluating algorithms.</p>
+      <a href="https://en.wikipedia.org/wiki/Big_O_notation" target="_blank" rel="noopener" class="glossary-link">Wikipedia &nearr;</a>
+    </div>
+    <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-200 dark:border-gray-800" data-gloss-i="6">
+      <h3 class="font-bold text-base mb-1" data-gloss-title>log n — Logarithm</h3>
+      <p class="text-xs text-gray-400 font-medium mb-2" data-gloss-sub>Base-2 logarithm</p>
+      <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed" data-gloss-desc>In computer science, log defaults to log₂. O(log n) often appears in divide-and-conquer algorithms (e.g., binary search) where each step halves the problem size.</p>
+      <a href="https://en.wikipedia.org/wiki/Logarithm" target="_blank" rel="noopener" class="glossary-link">Wikipedia &nearr;</a>
+    </div>
+    <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-200 dark:border-gray-800" data-gloss-i="7">
+      <h3 class="font-bold text-base mb-1" data-gloss-title>n! — Factorial</h3>
+      <p class="text-xs text-gray-400 font-medium mb-2" data-gloss-sub>n factorial</p>
+      <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed" data-gloss-desc>n! = n × (n-1) × ... × 2 × 1. Appears in permutation problems (e.g., brute-force traveling salesman). Grows extremely fast — O(n!) is only feasible for very small n.</p>
+      <a href="https://en.wikipedia.org/wiki/Factorial" target="_blank" rel="noopener" class="glossary-link">Wikipedia &nearr;</a>
+    </div>
+    <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-200 dark:border-gray-800" data-gloss-i="8">
+      <h3 class="font-bold text-base mb-1" data-gloss-title>Data Structure</h3>
+      <p class="text-xs text-gray-400 font-medium mb-2" data-gloss-sub>Organization of data</p>
+      <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed" data-gloss-desc>A way of organizing and storing data for efficient access and modification. Each structure has different trade-offs for access, search, insertion, and deletion.</p>
+      <a href="https://en.wikipedia.org/wiki/Data_structure" target="_blank" rel="noopener" class="glossary-link">Wikipedia &nearr;</a>
+    </div>
+    <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-200 dark:border-gray-800" data-gloss-i="9">
+      <h3 class="font-bold text-base mb-1" data-gloss-title>Sorting Algorithm</h3>
+      <p class="text-xs text-gray-400 font-medium mb-2" data-gloss-sub>Ordering elements</p>
+      <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed" data-gloss-desc>An algorithm that arranges elements in a list in a certain order (ascending, descending). Different algorithms trade off speed, memory usage, and stability.</p>
+      <a href="https://en.wikipedia.org/wiki/Sorting_algorithm" target="_blank" rel="noopener" class="glossary-link">Wikipedia &nearr;</a>
+    </div>
+    <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-200 dark:border-gray-800" data-gloss-i="10">
+      <h3 class="font-bold text-base mb-1" data-gloss-title>Stability</h3>
+      <p class="text-xs text-gray-400 font-medium mb-2" data-gloss-sub>Preserving relative order</p>
+      <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed" data-gloss-desc>A <strong>stable</strong> sort preserves the relative order of equal elements. Mergesort, Insertion Sort, Bubble Sort are stable; Quicksort, Heapsort, Selection Sort are not.</p>
+      <a href="https://en.wikipedia.org/wiki/Sorting_algorithm#Stability" target="_blank" rel="noopener" class="glossary-link">Wikipedia &nearr;</a>
+    </div>
+    <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-200 dark:border-gray-800" data-gloss-i="11">
+      <h3 class="font-bold text-base mb-1" data-gloss-title>In-place Algorithm</h3>
+      <p class="text-xs text-gray-400 font-medium mb-2" data-gloss-sub>Minimal extra memory</p>
+      <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed" data-gloss-desc>An <strong>in-place</strong> algorithm uses only a small amount of extra memory (O(1) or O(log n)) without duplicating the input. Heapsort and Quicksort are in-place; Mergesort is not.</p>
+      <a href="https://en.wikipedia.org/wiki/In-place_algorithm" target="_blank" rel="noopener" class="glossary-link">Wikipedia &nearr;</a>
+    </div>
+  </div>
+</section>
+
+<footer class="text-center text-xs text-gray-400 dark:text-gray-600 py-8 border-t border-gray-200 dark:border-gray-800">
+  <span data-i18n="source">Data sourced from</span> <a href="https://www.bigocheatsheet.com" class="underline hover:text-gray-600 dark:hover:text-gray-400" target="_blank" rel="noopener">bigocheatsheet.com</a>
+</footer>
+
+</main>
+
+  <script>
+    const i18n = {
+      en: {
+        title: 'Big-O <span class="text-emerald-500">Cheat Sheet</span>',
+        subtitle: 'Know Thy Complexities!',
+        chartTitle: 'Big-O Complexity Chart',
+        legendExcellent: 'Excellent',
+        legendGood: 'Good',
+        legendFair: 'Fair',
+        legendBad: 'Bad',
+        legendHorrible: 'Horrible',
+        chartX: 'Operations',
+        chartY: 'Elements \u2192',
+        dsTitle: 'Common Data Structure Operations',
+        dsCol: 'Data Structure',
+        dsAverage: 'Average',
+        dsWorstLabel: 'Worst',
+        dsSpace: 'Space',
+        dsAccess: 'Access',
+        dsSearch: 'Search',
+        dsInsert: 'Insert',
+        dsDelete: 'Delete',
+        dsWorst: 'Worst',
+        dsa: [
+          'Array', 'Stack', 'Queue', 'Singly-Linked List', 'Doubly-Linked List',
+          'Skip List', 'Hash Table', 'Binary Search Tree', 'Cartesian Tree',
+          'B-Tree', 'Red-Black Tree', 'Splay Tree', 'AVL Tree', 'KD Tree'
+        ],
+        sortTitle: 'Array Sorting Algorithms',
+        sortCol: 'Algorithm',
+        sortBest: 'Best',
+        sortAverage: 'Average',
+        sortWorst: 'Worst',
+        sortSpace: 'Space Worst',
+        sorter: [
+          'Quicksort', 'Mergesort', 'Timsort', 'Heapsort',
+          'Bubble Sort', 'Insertion Sort', 'Selection Sort',
+          'Tree Sort', 'Shell Sort', 'Bucket Sort', 'Radix Sort',
+          'Counting Sort', 'Cubesort'
+        ],
+        glossaryTitle: 'Glossary / Ch\u00fa th\u00edch',
+        glossaryIntro: 'Key terms and concepts used throughout this cheat sheet.',
+        source: 'Data sourced from'
+      },
+      vi: {
+        title: 'Big-O <span class="text-emerald-500">Cheat Sheet</span>',
+        subtitle: 'Hi\u1ec3u r\u00f5 \u0111\u1ed9 ph\u1ee9c t\u1ea1p!',
+        chartTitle: 'Bi\u1ec3u \u0111\u1ed3 \u0111\u1ed9 ph\u1ee9c t\u1ea1p Big-O',
+        legendExcellent: 'Xu\u1ea5t s\u1eafc',
+        legendGood: 'T\u1ed1t',
+        legendFair: '\u1ed4n',
+        legendBad: 'K\u00e9m',
+        legendHorrible: 'R\u1ea5t t\u1ec7',
+        chartX: 'S\u1ed1 thao t\u00e1c',
+        chartY: 'S\u1ed1 ph\u1ea7n t\u1eed \u2192',
+        dsTitle: 'Thao t\u00e1c tr\u00ean c\u1ea5u tr\u00fac d\u1eef li\u1ec7u',
+        dsCol: 'C\u1ea5u tr\u00fac d\u1eef li\u1ec7u',
+        dsAverage: 'Trung b\u00ecnh',
+        dsWorstLabel: 'X\u1ea5u nh\u1ea5t',
+        dsSpace: 'B\u1ed9 nh\u1edb',
+        dsAccess: 'Truy c\u1eadp',
+        dsSearch: 'T\u00ecm ki\u1ebfm',
+        dsInsert: 'Ch\u00e8n',
+        dsDelete: 'X\u00f3a',
+        dsWorst: 'X\u1ea5u nh\u1ea5t',
+        dsa: [
+          'M\u1ea3ng', 'Ng\u0103n x\u1ebfp', 'H\u00e0ng \u0111\u1ee3i', 'DS li\u00ean k\u1ebft \u0111\u01a1n', 'DS li\u00ean k\u1ebft \u0111\u00f4i',
+          'Skip List', 'B\u1ea3ng b\u0103m', 'C\u00e2y t\u00ecm ki\u1ebfm nh\u1ecb ph\u00e2n', 'C\u00e2y Cartesian',
+          'B-Tree', 'C\u00e2y \u0111\u1ecf-\u0111en', 'C\u00e2y Splay', 'C\u00e2y AVL', 'C\u00e2y KD'
+        ],
+        sortTitle: 'Thu\u1eadt to\u00e1n s\u1eafp x\u1ebfp m\u1ea3ng',
+        sortCol: 'Thu\u1eadt to\u00e1n',
+        sortBest: 'T\u1ed1t nh\u1ea5t',
+        sortAverage: 'Trung b\u00ecnh',
+        sortWorst: 'X\u1ea5u nh\u1ea5t',
+        sortSpace: 'B\u1ed9 nh\u1edb x\u1ea5u nh\u1ea5t',
+        sorter: [
+          'Quicksort', 'Mergesort', 'Timsort', 'Heapsort',
+          'Bubble Sort', 'Insertion Sort', 'Selection Sort',
+          'Tree Sort', 'Shell Sort', 'Bucket Sort', 'Radix Sort',
+          'Counting Sort', 'Cubesort'
+        ],
+        glossaryTitle: 'Ch\u00fa th\u00edch / Glossary',
+        glossaryIntro: 'C\u00e1c thu\u1eadt ng\u1eef v\u00e0 kh\u00e1i ni\u1ec7m ch\u00ednh \u0111\u01b0\u1ee3c s\u1eed d\u1ee5ng trong trang.',
+        source: 'D\u1eef li\u1ec7u t\u1eeb'
+      }
+    };
+
+    const glossaryI18n = {
+      en: [
+        { title: 'Big-O Notation', sub: 'Asymptotic upper bound', desc: 'Mathematical notation describing the <strong>upper bound</strong> of an algorithm\'s complexity as input size grows to infinity. Used to classify algorithms by their worst-case time or space requirements.' },
+        { title: 'Time Complexity', sub: 'Computational time', desc: 'The amount of time an algorithm needs to complete, expressed as a function of input size (n). Typically measured by counting elementary operations.' },
+        { title: 'Space Complexity', sub: 'Memory usage', desc: 'The amount of <strong>extra memory</strong> an algorithm uses during execution, excluding the memory occupied by the input data itself.' },
+        { title: '\u03a9(n) \u2014 Omega', sub: 'Best case (lower bound)', desc: 'Represents the <strong>best case</strong> scenario \u2014 the minimum running time achievable with ideal input.' },
+        { title: '\u0398(n) \u2014 Theta', sub: 'Average case (tight bound)', desc: 'Represents the <strong>average case</strong> \u2014 a tight bound both above and below. Reflects typical runtime with random data.' },
+        { title: 'O(n) \u2014 Big-O', sub: 'Worst case (upper bound)', desc: 'Represents the <strong>worst case</strong> \u2014 the maximum time an algorithm could take. This is the most common metric for evaluating algorithms.' },
+        { title: 'log n \u2014 Logarithm', sub: 'Base-2 logarithm', desc: 'In computer science, log defaults to log\u2082. O(log n) often appears in divide-and-conquer algorithms (e.g., binary search) where each step halves the problem size.' },
+        { title: 'n! \u2014 Factorial', sub: 'n factorial', desc: 'n! = n \u00d7 (n-1) \u00d7 ... \u00d7 2 \u00d7 1. Appears in permutation problems (e.g., brute-force traveling salesman). Grows extremely fast \u2014 O(n!) is only feasible for very small n.' },
+        { title: 'Data Structure', sub: 'Organization of data', desc: 'A way of organizing and storing data for efficient access and modification. Each structure has different trade-offs for access, search, insertion, and deletion.' },
+        { title: 'Sorting Algorithm', sub: 'Ordering elements', desc: 'An algorithm that arranges elements in a list in a certain order (ascending, descending). Different algorithms trade off speed, memory usage, and stability.' },
+        { title: 'Stability', sub: 'Preserving relative order', desc: 'A <strong>stable</strong> sort preserves the relative order of equal elements. Mergesort, Insertion Sort, Bubble Sort are stable; Quicksort, Heapsort, Selection Sort are not.' },
+        { title: 'In-place Algorithm', sub: 'Minimal extra memory', desc: 'An <strong>in-place</strong> algorithm uses only a small amount of extra memory (O(1) or O(log n)) without duplicating the input. Heapsort and Quicksort are in-place; Mergesort is not.' }
+      ],
+      vi: [
+        { title: 'Big-O Notation', sub: 'K\u00fd hi\u1ec7u Big-O', desc: 'K\u00fd hi\u1ec7u to\u00e1n h\u1ecdc m\u00f4 t\u1ea3 <strong>gi\u1edbi h\u1ea1n tr\u00ean</strong> c\u1ee7a \u0111\u1ed9 ph\u1ee9c t\u1ea1p thu\u1eadt to\u00e1n khi k\u00edch th\u01b0\u1edbc \u0111\u1ea7u v\u00e0o ti\u1ebfn \u0111\u1ebfn v\u00f4 c\u00f9ng. D\u00f9ng \u0111\u1ec3 ph\u00e2n lo\u1ea1i theo th\u1eddi gian ho\u1eb7c b\u1ed9 nh\u1edb trong tr\u01b0\u1eddng h\u1ee3p <strong>x\u1ea5u nh\u1ea5t</strong>.' },
+        { title: 'Time Complexity', sub: '\u0110\u1ed9 ph\u1ee9c t\u1ea1p th\u1eddi gian', desc: 'L\u01b0\u1ee3ng th\u1eddi gian m\u00e0 m\u1ed9t thu\u1eadt to\u00e1n c\u1ea7n \u0111\u1ec3 ho\u00e0n th\u00e0nh, \u0111\u01b0\u1ee3c bi\u1ec3u di\u1ec5n nh\u01b0 m\u1ed9t h\u00e0m c\u1ee7a k\u00edch th\u01b0\u1edbc \u0111\u1ea7u v\u00e0o (n). Th\u01b0\u1eddng \u0111\u01b0\u1ee3c \u0111o b\u1eb1ng s\u1ed1 thao t\u00e1c c\u01a1 b\u1ea3n.' },
+        { title: 'Space Complexity', sub: '\u0110\u1ed9 ph\u1ee9c t\u1ea1p b\u1ed9 nh\u1edb', desc: 'L\u01b0\u1ee3ng <strong>b\u1ed9 nh\u1edb b\u1ed5 sung</strong> m\u00e0 thu\u1eadt to\u00e1n c\u1ea7n trong qu\u00e1 tr\u00ecnh th\u1ef1c thi, kh\u00f4ng t\u00ednh b\u1ed9 nh\u1edb c\u1ee7a d\u1eef li\u1ec7u \u0111\u1ea7u v\u00e0o.' },
+        { title: '\u03a9(n) \u2014 Omega', sub: 'C\u1eadn d\u01b0\u1edbi (T\u1ed1t nh\u1ea5t)', desc: 'Bi\u1ec3u di\u1ec5n <strong>tr\u01b0\u1eddng h\u1ee3p t\u1ed1t nh\u1ea5t</strong> \u2014 th\u1eddi gian ch\u1ea1y t\u1ed1i thi\u1ec3u c\u00f3 th\u1ec3 \u0111\u1ea1t \u0111\u01b0\u1ee3c v\u1edbi \u0111\u1ea7u v\u00e0o l\u00fd t\u01b0\u1edfng.' },
+        { title: '\u0398(n) \u2014 Theta', sub: 'C\u1eadn ch\u1eb7t (Trung b\u00ecnh)', desc: 'Bi\u1ec3u di\u1ec5n <strong>tr\u01b0\u1eddng h\u1ee3p trung b\u00ecnh</strong> \u2014 gi\u1edbi h\u1ea1n ch\u1eb7t c\u1ea3 tr\u00ean v\u00e0 d\u01b0\u1edbi. Ph\u1ea3n \u00e1nh th\u1eddi gian ch\u1ea1y \u0111i\u1ec3n h\u00ecnh v\u1edbi d\u1eef li\u1ec7u ng\u1eabu nhi\u00ean.' },
+        { title: 'O(n) \u2014 Big-O', sub: 'C\u1eadn tr\u00ean (X\u1ea5u nh\u1ea5t)', desc: 'Bi\u1ec3u di\u1ec5n <strong>tr\u01b0\u1eddng h\u1ee3p x\u1ea5u nh\u1ea5t</strong> \u2014 th\u1eddi gian ch\u1ea1y t\u1ed1i \u0111a m\u00e0 thu\u1eadt to\u00e1n c\u00f3 th\u1ec3 m\u1ea5t. \u0110\u00e2y l\u00e0 th\u01b0\u1edbc \u0111o ph\u1ed5 bi\u1ebfn nh\u1ea5t \u0111\u1ec3 \u0111\u00e1nh gi\u00e1 thu\u1eadt to\u00e1n.' },
+        { title: 'log n \u2014 Logarithm', sub: 'Logarit c\u01a1 s\u1ed1 2', desc: 'Trong khoa h\u1ecdc m\u00e1y t\u00ednh, log m\u1eb7c \u0111\u1ecbnh l\u00e0 log\u2082. O(log n) th\u01b0\u1eddng xu\u1ea5t hi\u1ec7n trong thu\u1eadt to\u00e1n chia \u0111\u1ec3 tr\u1ecb (vd: t\u00ecm ki\u1ebfm nh\u1ecb ph\u00e2n), khi m\u1ed7i b\u01b0\u1edbc gi\u1ea3m k\u00edch th\u01b0\u1edbc b\u00e0i to\u00e1n \u0111i m\u1ed9t n\u1eeda.' },
+        { title: 'n! \u2014 Factorial', sub: 'n giai th\u1eeba', desc: 'n! = n \u00d7 (n-1) \u00d7 ... \u00d7 2 \u00d7 1. Xu\u1ea5t hi\u1ec7n trong b\u00e0i to\u00e1n ho\u00e1n v\u1ecb (vd: ng\u01b0\u1eddi b\u00e1n h\u00e0ng brute-force). T\u0103ng c\u1ef1c nhanh \u2014 O(n!) ch\u1ec9 kh\u1ea3 thi v\u1edbi n r\u1ea5t nh\u1ecf.' },
+        { title: 'Data Structure', sub: 'C\u1ea5u tr\u00fac d\u1eef li\u1ec7u', desc: 'C\u00e1ch t\u1ed5 ch\u1ee9c v\u00e0 l\u01b0u tr\u1eef d\u1eef li\u1ec7u \u0111\u1ec3 truy c\u1eadp v\u00e0 thao t\u00e1c hi\u1ec7u qu\u1ea3. M\u1ed7i c\u1ea5u tr\u00fac c\u00f3 \u01b0u/nh\u01b0\u1ee3c \u0111i\u1ec3m kh\u00e1c nhau v\u1ec1 truy c\u1eadp, t\u00ecm ki\u1ebfm, ch\u00e8n, x\u00f3a.' },
+        { title: 'Sorting Algorithm', sub: 'Thu\u1eadt to\u00e1n s\u1eafp x\u1ebfp', desc: 'Thu\u1eadt to\u00e1n s\u1eafp x\u1ebfp c\u00e1c ph\u1ea7n t\u1eed trong danh s\u00e1ch theo m\u1ed9t th\u1ee9 t\u1ef1 nh\u1ea5t \u0111\u1ecbnh (t\u0103ng d\u1ea7n, gi\u1ea3m d\u1ea7n). C\u00e1c thu\u1eadt to\u00e1n kh\u00e1c nhau c\u00f3 s\u1ef1 \u0111\u00e1nh \u0111\u1ed5i gi\u1eefa t\u1ed1c \u0111\u1ed9, b\u1ed9 nh\u1edb v\u00e0 t\u00ednh \u1ed5n \u0111\u1ecbnh.' },
+        { title: 'Stability', sub: 'T\u00ednh \u1ed5n \u0111\u1ecbnh', desc: 'Thu\u1eadt to\u00e1n s\u1eafp x\u1ebfp <strong>\u1ed5n \u0111\u1ecbnh</strong> gi\u1eef nguy\u00ean th\u1ee9 t\u1ef1 t\u01b0\u01a1ng \u0111\u1ed1i c\u1ee7a c\u00e1c ph\u1ea7n t\u1eed b\u1eb1ng nhau. Mergesort, Insertion Sort, Bubble Sort l\u00e0 \u1ed5n \u0111\u1ecbnh; Quicksort, Heapsort, Selection Sort th\u00ec kh\u00f4ng.' },
+        { title: 'In-place', sub: 'S\u1eafp x\u1ebfp t\u1ea1i ch\u1ed7', desc: 'Thu\u1eadt to\u00e1n <strong>t\u1ea1i ch\u1ed7</strong> ch\u1ec9 s\u1eed d\u1ee5ng m\u1ed9t l\u01b0\u1ee3ng nh\u1ecf b\u1ed9 nh\u1edb b\u1ed5 sung (O(1) ho\u1eb7c O(log n)). Heapsort, Quicksort l\u00e0 in-place; Mergesort th\u00ec kh\u00f4ng.' }
+      ]
+    };
+
+    function drawChart() {
+      var canvas = document.getElementById('complexityChart');
+      if (!canvas) return;
+
+      var dpr = window.devicePixelRatio || 1;
+      var rect = canvas.getBoundingClientRect();
+      var w = rect.width;
+      var h = 400;
+
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      canvas.style.width = w + 'px';
+      canvas.style.height = h + 'px';
+
+      var ctx = canvas.getContext('2d');
+      ctx.scale(dpr, dpr);
+
+      var isDark = document.documentElement.classList.contains('dark');
+
+      var bg = isDark ? '#111827' : '#f9fafb';
+      var gridColor = isDark ? '#374151' : '#d1d5db';
+      var textColor = isDark ? '#9ca3af' : '#6b7280';
+      var axisColor = isDark ? '#4b5563' : '#9ca3af';
+
+      var pad = { top: 20, right: 24, bottom: 52, left: 68 };
+      var pw = w - pad.left - pad.right;
+      var ph = h - pad.top - pad.bottom;
+
+      var maxN = 10;
+      var logMaxY = 6.7;  // log10(5e6)
+      var steps = 400;
+
+      function clampY(y) {
+        if (y < pad.top) return pad.top;
+        if (y > pad.top + ph) return pad.top + ph;
+        return y;
+      }
+
+      function toX(n) { return pad.left + pw * n / maxN; }
+      function toY(logv) {
+        var v = pad.top + ph - ph * logv / logMaxY;
+        return clampY(v);
+      }
+
+      // ---- Functions returning log10(y) ----
+      function fO1(x)       { return 0; }
+      function fOlogN(x)    { return x > 1 ? Math.log10(Math.log2(x)) : -99; }
+      function fOn(x)       { return x > 0 ? Math.log10(x) : -99; }
+      function fOnlogN(x)   { return x > 1 ? Math.log10(x * Math.log2(x)) : -99; }
+      function fOn2(x)      { return x > 0 ? 2 * Math.log10(x) : -99; }
+      function fO2n(x)      { return x * Math.log10(2); }
+      function fOnfact(x)   {
+        if (x < 1) return 0;
+        var s = 0, n = Math.floor(x);
+        for (var i = 2; i <= n; i++) s += Math.log10(i);
+        return s;
+      }
+
+      // compute sampled points, start from n >= where function is valid
+      function sample(fn, fromN, toN, pts) {
+        pts = pts || steps;
+        var out = [];
+        for (var s = 0; s <= pts; s++) {
+          var x = fromN + (toN - fromN) * s / pts;
+          var ly = fn(x);
+          out.push({ x: toX(x), y: toY(ly), raw: ly });
+        }
+        return out;
+      }
+
+      // ---- Background ----
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, w, h);
+
+      // ---- BG Regions ----
+      // Use safe starting points to avoid -99 overflow
+      var rColors = [
+        isDark ? 'rgba(22,163,74,0.10)'  : 'rgba(34,197,94,0.08)',
+        isDark ? 'rgba(202,138,4,0.09)'  : 'rgba(250,204,21,0.08)',
+        isDark ? 'rgba(234,88,12,0.07)'  : 'rgba(251,146,60,0.06)',
+        isDark ? 'rgba(220,38,38,0.08)'  : 'rgba(239,68,68,0.06)'
+      ];
+      // boundaries: O(log n) → O(n) → O(n log n) → O(n²)
+      var rbFns = [fOlogN, fOn, fOnlogN, fOn2];
+      var rbStart = [2, 0.5, 1.5, 1];       // safe starting n for each boundary
+      var rbSamples = [];
+
+      for (var ri = 0; ri < rbFns.length; ri++) {
+        rbSamples.push(sample(rbFns[ri], rbStart[ri], maxN, 250));
+      }
+
+      // Draw 4 colored regions
+      for (var ri = 0; ri < 4; ri++) {
+        ctx.beginPath();
+        var botCurve = ri === 0 ? null : rbSamples[ri - 1];
+        var topCurve = rbSamples[ri];
+
+        // Start from bottom-left
+        if (botCurve) {
+          // Region between two curves: follow bottom curve left-to-right, then top curve right-to-left
+          ctx.moveTo(botCurve[0].x, botCurve[0].y);
+          for (var i = 1; i < botCurve.length; i++) ctx.lineTo(botCurve[i].x, botCurve[i].y);
+          for (var i = topCurve.length - 1; i >= 0; i--) ctx.lineTo(topCurve[i].x, topCurve[i].y);
+          ctx.lineTo(botCurve[0].x, botCurve[0].y);
+        } else {
+          // Bottommost region (excellent): below O(log n)
+          ctx.moveTo(pad.left, pad.top + ph);
+          ctx.lineTo(pad.left + pw, pad.top + ph);
+          for (var i = topCurve.length - 1; i >= 0; i--) ctx.lineTo(topCurve[i].x, topCurve[i].y);
+          ctx.lineTo(pad.left, pad.top + ph);
+        }
+        ctx.closePath();
+        ctx.fillStyle = rColors[ri];
+        ctx.fill();
+      }
+
+      // Topmost region (horrible): above O(n²) — triangle
+      ctx.beginPath();
+      var topBound = rbSamples[3];
+      ctx.moveTo(topBound[0].x, topBound[0].y);
+      for (var i = 1; i < topBound.length; i++) ctx.lineTo(topBound[i].x, topBound[i].y);
+      ctx.lineTo(pad.left + pw, pad.top);
+      ctx.lineTo(pad.left, pad.top);
+      ctx.lineTo(topBound[0].x, topBound[0].y);
+      ctx.closePath();
+      ctx.fillStyle = isDark ? 'rgba(124,58,237,0.08)' : 'rgba(168,85,247,0.05)';
+      ctx.fill();
+
+      // ---- Grid ----
+      var yTicks = [0, 1, 2, 3, 4, 5, 6, 6.7];
+      var yLab = ['1', '10', '10²', '10³', '10⁴', '10⁵', '10⁶', ''];
+      for (var ti = 1; ti < yTicks.length; ti++) {
+        var gy = toY(yTicks[ti]);
+        ctx.beginPath();
+        ctx.strokeStyle = gridColor;
+        ctx.lineWidth = 0.5;
+        ctx.setLineDash([4, 3]);
+        ctx.moveTo(pad.left, gy);
+        ctx.lineTo(w - pad.right, gy);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        if (yLab[ti]) {
+          ctx.fillStyle = textColor;
+          ctx.font = '10px \"JetBrains Mono\", Consolas, monospace';
+          ctx.textAlign = 'right';
+          ctx.fillText(yLab[ti], pad.left - 8, gy + 4);
+        }
+      }
+
+      for (var n = 0; n <= maxN; n++) {
+        var gx = toX(n);
+        ctx.beginPath();
+        ctx.strokeStyle = gridColor;
+        ctx.lineWidth = 0.5;
+        ctx.setLineDash([4, 3]);
+        ctx.moveTo(gx, pad.top);
+        ctx.lineTo(gx, pad.top + ph);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        ctx.fillStyle = textColor;
+        ctx.font = '11px Inter, system-ui, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(String(n), gx, pad.top + ph + 18);
+      }
+
+      // ---- Axes ----
+      ctx.strokeStyle = axisColor;
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([]);
+      ctx.beginPath();
+      ctx.moveTo(pad.left, pad.top);
+      ctx.lineTo(pad.left, pad.top + ph);
+      ctx.lineTo(w - pad.right, pad.top + ph);
+      ctx.stroke();
+
+      // ---- Complexity curves + labels ----
+      var curves = [
+        { fn: fO1,     from: 0,   color: isDark ? '#4ade80' : '#22c55e', label: 'O(1)',      w: 2.5 },
+        { fn: fOlogN,  from: 2,   color: isDark ? '#a3e635' : '#86efac', label: 'O(log n)',   w: 2.5 },
+        { fn: fOn,     from: 0.5, color: isDark ? '#facc15' : '#ca8a04', label: 'O(n)',       w: 2.5 },
+        { fn: fOnlogN, from: 1.5, color: isDark ? '#fb923c' : '#ea580c', label: 'O(n log n)', w: 3   },
+        { fn: fOn2,    from: 1,   color: isDark ? '#f87171' : '#dc2626', label: 'O(n²)',   w: 3   },
+        { fn: fO2n,    from: 0,   color: isDark ? '#c084fc' : '#7c3aed', label: 'O(2ⁿ)',   w: 3   },
+        { fn: fOnfact, from: 0,   color: isDark ? '#818cf8' : '#4f46e5', label: 'O(n!)',      w: 3.5 }
+      ];
+
+      for (var ci = 0; ci < curves.length; ci++) {
+        var cInfo = curves[ci];
+        var pts = sample(cInfo.fn, cInfo.from, maxN, steps);
+
+        ctx.strokeStyle = cInfo.color;
+        ctx.lineWidth = cInfo.w;
+        ctx.lineJoin = 'round';
+        ctx.lineCap = 'round';
+        ctx.setLineDash([]);
+        ctx.beginPath();
+        ctx.moveTo(pts[0].x, pts[0].y);
+        for (var i = 1; i < pts.length; i++) {
+          ctx.lineTo(pts[i].x, pts[i].y);
+        }
+        ctx.stroke();
+
+        // Label — anchored at endpoint, clamped within chart
+        var last = pts[pts.length - 1];
+        var lx = last.x + 6;
+        var ly = last.y + 3;
+
+        // Keep label within chart bounds
+        if (lx + 80 > pad.left + pw) lx = last.x - 80;   // flip to left if too far right
+        if (lx < pad.left + 4) lx = pad.left + 6;
+        if (ly < pad.top + 12) ly = pad.top + 14;
+        if (ly > pad.top + ph - 4) ly = pad.top + ph - 6;
+
+        // Spread labels to avoid overlap
+        if (ci === 4) ly += 8;
+        if (ci === 5) ly -= 2;
+        if (ci === 6) ly -= 4;
+
+        ctx.fillStyle = cInfo.color;
+        ctx.font = 'bold 11px \"JetBrains Mono\", Consolas, monospace';
+        ctx.textAlign = 'left';
+        ctx.fillText(cInfo.label, lx, ly);
+      }
+
+      // ---- Axis labels ----
+      ctx.fillStyle = textColor;
+      ctx.font = '12px Inter, system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('n (input size)', w / 2, pad.top + ph + 38);
+
+      ctx.save();
+      ctx.translate(18, pad.top + ph / 2);
+      ctx.rotate(-Math.PI / 2);
+      ctx.font = '12px Inter, system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('Operations', 0, 0);
+      ctx.restore();
+    }
+
+    function setLang(l) {
+      document.documentElement.dataset.lang = l;
+      localStorage.setItem('lang', l);
+
+      document.querySelectorAll('[data-i18n]').forEach(function(el) {
+        var key = el.getAttribute('data-i18n');
+        var val = i18n[l] && i18n[l][key];
+        if (val !== undefined) el.textContent = val;
+      });
+      document.querySelectorAll('[data-i18n-html]').forEach(function(el) {
+        var key = el.getAttribute('data-i18n-html');
+        var val = i18n[l] && i18n[l][key];
+        if (val !== undefined) el.innerHTML = val;
+      });
+      document.querySelectorAll('[data-ds-i]').forEach(function(el) {
+        var i = parseInt(el.getAttribute('data-ds-i'));
+        var val = i18n[l] && i18n[l].dsa && i18n[l].dsa[i];
+        if (val !== undefined) el.textContent = val;
+      });
+      document.querySelectorAll('[data-sort-i]').forEach(function(el) {
+        var i = parseInt(el.getAttribute('data-sort-i'));
+        var val = i18n[l] && i18n[l].sorter && i18n[l].sorter[i];
+        if (val !== undefined) el.textContent = val;
+      });
+
+      document.querySelectorAll('[data-gloss-i]').forEach(function(el) {
+        var i = parseInt(el.getAttribute('data-gloss-i'));
+        var item = glossaryI18n[l] && glossaryI18n[l][i];
+        if (!item) return;
+        var titleEl = el.querySelector('[data-gloss-title]');
+        var subEl = el.querySelector('[data-gloss-sub]');
+        var descEl = el.querySelector('[data-gloss-desc]');
+        if (titleEl) titleEl.innerHTML = item.title;
+        if (subEl) subEl.textContent = item.sub;
+        if (descEl) descEl.innerHTML = item.desc;
+      });
+
+      document.documentElement.lang = l === 'vi' ? 'vi' : 'en';
+
+      var label = document.getElementById('lang-label');
+      if (label) label.textContent = l === 'vi' ? 'VI' : 'EN';
+    }
+
+    function toggleLang() {
+      var current = document.documentElement.dataset.lang || 'en';
+      setLang(current === 'en' ? 'vi' : 'en');
+    }
+
+    function toggleTheme() {
+      var html = document.documentElement;
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+      drawChart();
+    }
+
+    (function init() {
+      var stored = localStorage.getItem('theme');
+      if (stored === 'dark' || (!stored && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      }
+
+      var saved = localStorage.getItem('lang') || 'en';
+      setLang(saved);
+
+      var langBtn = document.getElementById('lang-btn');
+      var themeBtn = document.getElementById('theme-btn');
+      drawChart();
+      window.addEventListener('resize', function() { drawChart(); });
+      if (langBtn) langBtn.addEventListener('click', toggleLang);
+      if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1802 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Cheat Sheet</title>
+<style>
+:root {
+  --bg: #ffffff;
+  --bg-nav: #f8f9fa;
+  --text: #212529;
+  --text-secondary: #6c757d;
+  --border: #dee2e6;
+  --code-bg: #f1f3f5;
+  --accent: #306998;
+  --accent2: #ffd43b;
+  --highlight-bg: #fff3cd;
+  --highlight-border: #ffc107;
+  --card-bg: #ffffff;
+  --card-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  --section-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  --tag-bg: #e7f1fa;
+  --tag-color: #306998;
+  --transition: 0.3s ease;
+
+  --syn-keyword:   #a626a4;
+  --syn-string:    #50a14f;
+  --syn-comment:   #a0a1a7;
+  --syn-number:    #986801;
+  --syn-decorator: #c18401;
+  --syn-builtin:   #4078f2;
+  --syn-boolean:   #0184bc;
+  --syn-self:      #e45649;
+  --syn-dunder:    #e45649;
+}
+[data-theme="dark"] {
+  --bg: #1a1a2e;
+  --bg-nav: #16213e;
+  --text: #e4e6eb;
+  --text-secondary: #b0b3b8;
+  --border: #3a3b5a;
+  --code-bg: #2a2a4a;
+  --accent: #5b9bd5;
+  --accent2: #ffd43b;
+  --highlight-bg: #3d3520;
+  --highlight-border: #ffc107;
+  --card-bg: #222244;
+  --card-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  --section-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  --tag-bg: #253a5e;
+  --tag-color: #5b9bd5;
+
+  --syn-keyword:   #c678dd;
+  --syn-string:    #98c379;
+  --syn-comment:   #5c6370;
+  --syn-number:    #d19a66;
+  --syn-decorator: #e5c07b;
+  --syn-builtin:   #61afef;
+  --syn-boolean:   #56b6c2;
+  --syn-self:      #c678dd;
+  --syn-dunder:    #e06c75;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  transition: background var(--transition), color var(--transition);
+}
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--bg-nav);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 24px;
+  display: flex; align-items: center; gap: 16px;
+  flex-wrap: wrap;
+  box-shadow: var(--section-shadow);
+  transition: background var(--transition);
+}
+nav h1 {
+  font-size: 1.2rem; color: var(--accent);
+  white-space: nowrap;
+}
+nav .controls {
+  display: flex; gap: 8px; margin-left: auto; flex-wrap: wrap;
+}
+nav .nav-links {
+  display: flex; gap: 2px; overflow-x: auto;
+  white-space: nowrap; flex: 1; min-width: 0;
+  -ms-overflow-style: none; scrollbar-width: none;
+}
+nav .nav-links::-webkit-scrollbar { display: none; }
+nav .nav-links a {
+  color: var(--text-secondary); text-decoration: none;
+  font-size: 0.78rem; padding: 4px 8px; border-radius: 4px;
+  transition: color var(--transition), background var(--transition);
+}
+nav .nav-links a:hover, nav .nav-links a.active {
+  color: var(--accent); background: var(--code-bg);
+}
+.btn {
+  padding: 6px 14px; border: 1px solid var(--border);
+  border-radius: 6px; cursor: pointer; font-size: 0.85rem;
+  background: var(--card-bg); color: var(--text);
+  transition: all var(--transition); white-space: nowrap;
+}
+.btn:hover { border-color: var(--accent); color: var(--accent); }
+.btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+main { max-width: 960px; margin: 0 auto; padding: 24px 20px 60px; }
+section {
+  margin-bottom: 32px;
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 24px;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border);
+  transition: background var(--transition), box-shadow var(--transition);
+}
+section h2 {
+  font-size: 1.35rem; margin-bottom: 16px;
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent2);
+  padding-bottom: 6px; display: inline-block;
+}
+section h3 {
+  font-size: 1.05rem; margin: 16px 0 8px;
+  color: var(--text);
+}
+section p, section ul { margin-bottom: 8px; font-size: 0.95rem; }
+section ul { padding-left: 20px; }
+section ul li { margin-bottom: 4px; }
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 14px 18px;
+  overflow-x: auto;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  margin: 10px 0;
+  transition: background var(--transition);
+}
+code {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+  font-size: 0.85rem;
+}
+
+.syn-keyword  { color: var(--syn-keyword); }
+.syn-string   { color: var(--syn-string); }
+.syn-comment  { color: var(--syn-comment); font-style: italic; }
+.syn-number   { color: var(--syn-number); }
+.syn-decorator { color: var(--syn-decorator); }
+.syn-builtin  { color: var(--syn-builtin); }
+.syn-boolean  { color: var(--syn-boolean); }
+.syn-self     { color: var(--syn-self); font-style: italic; }
+.syn-dunder   { color: var(--syn-dunder); }
+
+.highlight {
+  background: var(--highlight-bg);
+  border-left: 4px solid var(--highlight-border);
+  padding: 10px 14px; margin: 12px 0;
+  border-radius: 0 6px 6px 0; font-size: 0.9rem;
+}
+.tag {
+  display: inline-block;
+  background: var(--tag-bg);
+  color: var(--tag-color);
+  padding: 2px 8px; border-radius: 4px;
+  font-size: 0.75rem; font-weight: 600;
+  margin: 2px 4px 2px 0;
+}
+.tag.algo { background: #d4edda; color: #155724; }
+[data-theme="dark"] .tag.algo { background: #1e4a2e; color: #7ddf90; }
+.intro-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px; margin-top: 16px;
+}
+.intro-card {
+  background: var(--code-bg); border: 1px solid var(--border);
+  border-radius: 8px; padding: 16px; transition: background var(--transition);
+}
+.intro-card h3 { font-size: 0.95rem; margin: 0 0 6px; color: var(--accent); }
+.intro-card p { font-size: 0.85rem; color: var(--text-secondary); margin: 0; }
+footer {
+  text-align: center; padding: 20px;
+  color: var(--text-secondary); font-size: 0.85rem;
+  border-top: 1px solid var(--border);
+  transition: border-color var(--transition);
+}
+details { margin: 10px 0; }
+details summary {
+  cursor: pointer; font-weight: 600; color: var(--accent);
+  padding: 6px 0; user-select: none;
+}
+details > *:not(summary) { margin-left: 12px; }
+.glossary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+.glossary-card {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  transition: background var(--transition), border-color var(--transition);
+}
+.glossary-card:hover { border-color: var(--accent); }
+.glossary-term {
+  font-weight: 700;
+  color: var(--accent);
+  font-size: 0.9rem;
+  margin-bottom: 6px;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+}
+.glossary-def {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+.glossary-def code {
+  font-size: 0.8rem;
+  background: var(--card-bg);
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+@media (max-width: 600px) {
+  main { padding: 16px 10px 40px; }
+  section { padding: 16px; }
+  pre { padding: 10px 12px; font-size: 0.8rem; }
+  nav { padding: 8px 12px; }
+  nav h1 { font-size: 1rem; }
+}
+</style>
+</head>
+<body data-theme="light">
+
+<nav id="top-nav">
+  <h1>🐍 Python Cheat Sheet</h1>
+  <div class="nav-links" id="nav-links"></div>
+  <div class="controls">
+    <button class="btn active" id="btn-vi" onclick="setLang('vi')">🇻🇳 VI</button>
+    <button class="btn" id="btn-en" onclick="setLang('en')">🇬🇧 EN</button>
+    <button class="btn" id="btn-theme" onclick="toggleTheme()">🌙 Dark</button>
+  </div>
+</nav>
+
+<main id="content"></main>
+
+<footer id="footer"></footer>
+
+<script>
+// ============================================================================
+// DATA
+// ============================================================================
+const langData = { vi: {}, en: {} };
+
+langData.vi = {
+  title: 'Python Cheat Sheet – Từ Cơ Bản Đến Nâng Cao',
+  footer: 'Python Cheat Sheet – Made with ❤️ for learners & developers.',
+  introTitle: '🐍 Giới Thiệu Python',
+  introWhyTitle: 'Tại Sao Nên Chọn Python?',
+  introFutureTitle: '📈 Xu Hướng Tương Lai',
+  introText: 'Python là ngôn ngữ lập trình bậc cao, thông dịch, hướng đối tượng với cú pháp rõ ràng, dễ đọc. Được tạo ra bởi Guido van Rossum (1991), Python nay là một trong những ngôn ngữ phổ biến nhất thế giới.',
+  introWhy: [
+    { h: 'Cú pháp sạch, dễ học', p: 'Ít boilerplate, tập trung vào logic. Học nhanh, code nhanh.' },
+    { h: 'Hệ sinh thái khổng lồ', p: 'Thư viện cho Data Science (NumPy, Pandas), ML (PyTorch, TensorFlow), Web (Django, FastAPI), Automation.' },
+    { h: 'Mạnh về thuật toán', p: 'Cấu trúc dữ liệu built-in mạnh mẽ (list, dict, set). Module collections, heapq, bisect, itertools, functools giúp code thuật toán dễ dàng.' },
+    { h: 'Cộng đồng lớn', p: 'Tài liệu phong phú, Stack Overflow, GitHub – dễ tìm hỗ trợ.' },
+    { h: 'Đa nền tảng', p: 'Chạy trên Windows, macOS, Linux. Viết một lần, chạy khắp nơi.' },
+    { h: 'Tương lai AI/ML', p: 'Python là ngôn ngữ #1 cho AI, Machine Learning, Data Science.' },
+  ],
+  introFuture: [
+    'Python tiếp tục dẫn đầu trong AI/ML và khoa học dữ liệu.',
+    'Phiên bản mới cải thiện hiệu năng (Python 3.11+ nhanh hơn 10-60% nhờ adaptive interpreter).',
+    'WebAssembly (Wasm) cho phép Python chạy trên trình duyệt (PyScript).',
+    'Tích hợp sâu với Cloud, DevOps, và tự động hóa.',
+    'Python là kỹ năng không thể thiếu cho kỹ sư phần mềm hiện đại.',
+  ],
+
+  // Nav labels
+  navIntro: 'Giới thiệu',
+  navBasics: '1. Cơ bản',
+  navFunctions: '2. Hàm',
+  navDataStructures: '3. Cấu trúc DL',
+  navStrings: '4. Chuỗi',
+  navOOP: '5. OOP',
+  navComprehensions: '6. Comprehensions',
+  navLambda: '7. Lambda',
+  navIterators: '8. Generator',
+  navDecorators: '9. Decorator',
+  navModules: '10. Modules',
+  navExceptions: '11. Ngoại lệ',
+  navFiles: '12. Files',
+  navTyping: '13. Type Hints',
+  navAsync: '14. Async/Await',
+  navAlgo: '15. Thuật toán',
+  navMisc: '16. Mẹo hay',
+  navGlossary: 'Chú thích',
+
+  secBasics: '1. Kiến Thức Cơ Bản',
+  secFunctions: '2. Hàm & Phạm Vi',
+  secDataStructures: '3. Cấu Trúc Dữ Liệu',
+  secStrings: '4. Xử Lý Chuỗi',
+  secOOP: '5. Lập Trình Hướng Đối Tượng',
+  secComprehensions: '6. Comprehensions',
+  secLambda: '7. Lambda, Map, Filter, Reduce',
+  secIterators: '8. Iterators & Generators',
+  secDecorators: '9. Decorators',
+  secModules: '10. Modules & Packages',
+  secExceptions: '11. Xử Lý Ngoại Lệ',
+  secFiles: '12. Làm Việc Với File',
+  secTyping: '13. Type Hints (Gợi Ý Kiểu)',
+  secAsync: '14. Async / Await (Bất Đồng Bộ)',
+  secAlgo: '15. ⚡ Thư Viện Cho Thuật Toán',
+  secMisc: '16. Mẹo & Thủ Thuật',
+  secGlossary: '📖 Chú Thích Thuật Ngữ',
+
+  basics: {
+    desc: 'Biến, kiểu dữ liệu, toán tử và luồng điều khiển cơ bản.',
+    code: `# Variables & Data Types
+x = 10              # int
+y = 3.14            # float
+name = "Python"     # str
+is_active = True    # bool
+items = [1, 2, 3]   # list
+t = (1, 2)          # tuple (immutable)
+s = {1, 2, 3}       # set
+d = {"a": 1}        # dict
+
+# Type checking
+print(type(x))      # <class 'int'>
+print(isinstance(x, int))  # True
+
+# Operators
+a = 10; b = 3
+print(a // b)   # 3   (floor division)
+print(a % b)    # 1   (modulo)
+print(a ** b)   # 1000 (power)
+print(a == 10 and b == 3)  # True
+print(not False)  # True
+
+# Control Flow
+if x > 5:
+    print("big")
+elif x == 5:
+    pass
+else:
+    print("small")
+
+for i in range(5):   # 0..4
+    print(i)
+
+while x > 0:
+    x -= 1`,
+    highlights: ['Dùng <code>isinstance()</code> thay vì <code>type() == </code> để kiểm tra kiểu.', '<code>//</code> (floor division) và <code>%</code> (modulo) rất hữu ích trong chia để trị và vòng lặp.'],
+  },
+
+  functions: {
+    desc: 'Định nghĩa hàm, tham số, phạm vi biến (LEGB rule).',
+    code: `# Function definition
+def add(a, b):
+    """Docstring: Add two numbers."""
+    return a + b
+
+# Default & keyword args
+def greet(name, greeting="Hello"):
+    return f"{greeting}, {name}!"
+
+greet("World")              # "Hello, World!"
+greet("Nam", "Xin chào")    # "Xin chào, Nam!"
+
+# *args and **kwargs
+def var_args(*args, **kwargs):
+    print(args)    # tuple
+    print(kwargs)  # dict
+
+var_args(1, 2, x="hello")
+
+# Scope: LEGB rule
+# Local -> Enclosing -> Global -> Built-in
+x = "global"
+def outer():
+    x = "enclosing"
+    def inner():
+        nonlocal x   # modifies enclosing x
+        x = "inner"
+    inner()
+    return x   # "inner"`,
+    highlights: ['Dùng <code>*args</code> (tuple) và <code>**kwargs</code> (dict) cho hàm linh hoạt.', 'LEGB Rule: Local → Enclosing → Global → Built-in. Rất quan trọng khi debug thuật toán đệ quy.'],
+  },
+
+  data_structures: {
+    desc: 'List, Tuple, Set, Dict – chọn đúng cấu trúc giúp tối ưu thuật toán.',
+    code: `# === LIST (mutable, ordered) ===
+arr = [1, 2, 3]
+arr.append(4)       # O(1) amortized
+arr.pop()           # O(1)
+arr.insert(0, 0)    # O(n)
+arr.sort()          # O(n log n), in-place
+arr2 = sorted(arr)  # returns new list
+arr[-1]             # last element
+
+# List as Stack
+stack = []; stack.append(1); stack.append(2)
+stack.pop()  # 2 (LIFO)
+
+# List as Queue (use collections.deque for O(1))
+from collections import deque
+q = deque(); q.append(1); q.append(2)
+q.popleft()  # 1 (FIFO)
+
+# Slicing: [start:stop:step]
+arr = [0,1,2,3,4,5]
+arr[1:4]    # [1,2,3]
+arr[::-1]   # [5,4,3,2,1,0] - reverse
+
+# === TUPLE (immutable) ===
+t = (1, 2, 3)
+a, b, c = t   # unpacking
+# Swap: a, b = b, a
+
+# === SET (unordered, unique) ===
+s = {1, 2, 3}; s.add(4); s.remove(2)
+a = {1,2,3}; b = {2,3,4}
+a | b  # union: {1,2,3,4}
+a & b  # intersection: {2,3}
+a - b  # difference: {1}
+a ^ b  # symmetric diff: {1,4}
+# O(1) average lookup!
+
+# === DICT (key-value, hash map) ===
+d = {'a': 1, 'b': 2}
+d['c'] = 3         # set
+d.get('z', 0)      # 0 (default)
+d.setdefault('x', 99)
+for k, v in d.items(): pass
+d.keys(); d.values()  # dynamic views`,
+    highlights: [
+      '<span class="tag algo">Thuật toán</span> <strong>Set/Dict O(1) lookup</strong> – dùng thay list khi cần kiểm tra tồn tại nhanh.',
+      '<span class="tag algo">Thuật toán</span> <strong>collections.deque</strong> – queue O(1) thay vì list.pop(0) O(n).',
+      '<span class="tag algo">Thuật toán</span> <strong>Slicing</strong> và <strong>index âm</strong> cực kỳ mạnh khi xử lý mảng con.',
+    ],
+  },
+
+  strings: {
+    desc: 'Định dạng chuỗi, cắt ghép và các phương thức hữu ích.',
+    code: `# Formatting
+name = "Python"
+f"Hello {name}!"          # f-string (3.6+)
+"{} {}".format(1, 2)      # format method
+"%.2f" % 3.14159          # old-style: "3.14"
+
+# Common methods
+s = "  Hello World  "
+s.strip()        # "Hello World"
+s.lower()        # case
+s.upper()
+s.replace("World", "Python")
+s.split()        # ['Hello', 'World']
+", ".join(["a","b","c"])  # "a, b, c"
+"abc".find("b")  # 1 (or -1)
+"one;two".partition(";")  # ("one", ";", "two")
+
+# Checkers
+"123".isdigit()     # True
+"abc".isalpha()     # True
+"hello".startswith("he")
+
+# Char ↔ Code
+ord('A')   # 65
+chr(65)    # 'A'`,
+    highlights: ['<span class="tag algo">Thuật toán</span> <code>join()</code> nhanh hơn <code>+=</code> trong vòng lặp (O(n) vs O(n²)).', '<code>ord()</code> / <code>chr()</code> hữu ích khi giải bài toán ký tự (anagram, frequency array).'],
+  },
+
+  oop: {
+    desc: 'Class, kế thừa, magic methods (dunder).',
+    code: `class Dog:
+    species = "Canis familiaris"  # class attribute
+
+    def __init__(self, name, age):
+        self.name = name   # instance attribute
+        self.age = age
+
+    def __str__(self):
+        return f"{self.name} ({self.age})"
+
+    def __repr__(self):
+        return f"Dog(name='{self.name}', age={self.age})"
+
+    def __lt__(self, other):
+        return self.age < other.age
+
+class Retriever(Dog):
+    def fetch(self):
+        return f"{self.name} fetches!"
+
+# Multiple inheritance (MRO: C3 linearization)
+class A: pass
+class B(A): pass
+class C(A): pass
+class D(B, C): pass
+# D.mro() -> D -> B -> C -> A -> object
+
+# @property
+class Circle:
+    def __init__(self, r): self._r = r
+    @property
+    def area(self): return 3.14 * self._r ** 2
+
+c = Circle(5)
+print(c.area)  # no parentheses!`,
+    highlights: ['<span class="tag algo">Thuật toán</span> <code>__lt__</code>, <code>__eq__</code>, <code>__hash__</code> rất quan trọng khi dùng object làm key trong dict/set hoặc sort.', '<code>@property</code> giúp computed attribute clean, không cần getter/setter.'],
+  },
+
+  comprehensions: {
+    desc: 'List, dict, set comprehension – code gọn, nhanh hơn vòng lặp thường.',
+    code: `# List comprehension
+squares = [x**2 for x in range(10)]
+evens = [x for x in range(20) if x % 2 == 0]
+
+# Nested
+matrix = [[i*j for j in range(3)] for i in range(3)]
+
+# Dict comprehension
+d = {x: x**2 for x in range(5)}        # {0:0, 1:1, 2:4, ...}
+d = {v: k for k, v in d.items()}       # swap
+
+# Set comprehension
+s = {x % 3 for x in range(10)}         # unique mod values
+
+# Generator expression (lazy, memory efficient)
+gen = (x**2 for x in range(10**6))
+sum(gen)  # computes on the fly`,
+    highlights: ['<span class="tag algo">Thuật toán</span> List comprehension nhanh hơn vòng lặp for thông thường.', '<span class="tag algo">Thuật toán</span> Generator expression (dấu <code>()</code>) tiết kiệm bộ nhớ khi xử lý dữ liệu lớn.'],
+  },
+
+  lambda_map: {
+    desc: 'Lambda cho hàm ẩn danh, map/filter/reduce cho functional style.',
+    code: `# Lambda
+add = lambda a, b: a + b
+sorted(items, key=lambda x: x[1])       # sort by index 1
+sorted(items, key=lambda x: (-x[0], x[1]))  # descending + ascending
+
+# Map: apply function to every element
+nums = [1, 2, 3]
+list(map(str, nums))   # ['1', '2', '3']
+
+# Filter: keep elements where function returns True
+list(filter(lambda x: x > 1, nums))  # [2, 3]
+
+# Reduce: accumulate (need functools)
+from functools import reduce
+reduce(lambda acc, x: acc + x, nums, 0)  # 6
+
+# Functional + comprehension
+# Prefer: [x*2 for x in nums if x > 1]`,
+    highlights: ['<span class="tag algo">Thuật toán</span> <code>key=lambda</code> trong <code>sorted()</code> là pattern phổ biến khi sắp xếp mảng 2 chiều, object.', '<code>reduce()</code> hữu ích cho fold/accumulate pattern.'],
+  },
+
+  iterators: {
+    desc: 'Iterator protocol, generator (yield) – nền tảng lazy evaluation.',
+    code: `# Iterator protocol
+class CountDown:
+    def __init__(self, start):
+        self.current = start
+    def __iter__(self):
+        return self
+    def __next__(self):
+        if self.current <= 0: raise StopIteration
+        self.current -= 1
+        return self.current + 1
+
+for n in CountDown(5): print(n)  # 5 4 3 2 1
+
+# Generator function (yield)
+def fibonacci(limit):
+    a, b = 0, 1
+    while a < limit:
+        yield a
+        a, b = b, a + b
+
+list(fibonacci(100))  # [0,1,1,2,3,5,8,13...]
+
+# yield from
+def chain(*iterables):
+    for it in iterables:
+        yield from it
+
+# Generator expression (lazy)
+sum(x*x for x in range(10**7) if x % 3 == 0)`,
+    highlights: ['<span class="tag algo">Thuật toán</span> <code>yield</code> cho phép duyệt dữ liệu lớn mà không cần load hết vào RAM.', '<span class="tag algo">Thuật toán</span> Generator là nền tảng của BFS/DFS lazy, infinite streams.'],
+  },
+
+  decorators: {
+    desc: 'Wrapper function không thay đổi code gốc. Pattern cực mạnh.',
+    code: `# Basic decorator
+def timer(func):
+    import time
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        result = func(*args, **kwargs)
+        print(f"{func.__name__}: {time.time()-start:.4f}s")
+        return result
+    return wrapper
+
+@timer
+def slow_func():
+    s = 0
+    for i in range(10**7): s += i
+    return s
+
+# Decorator with arguments
+def repeat(n):
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            for _ in range(n):
+                result = func(*args, **kwargs)
+            return result
+        return wrapper
+    return decorator
+
+@repeat(3)
+def say_hello(): print("Hello")
+
+# Common decorators
+# @staticmethod, @classmethod
+# @property (already covered)
+# @functools.lru_cache  -- memoization!
+# @functools.wraps      -- preserve metadata`,
+    highlights: ['<span class="tag algo">Thuật toán</span> <code>@functools.lru_cache</code> là memoization tự động – tối ưu DP/đệ quy với 1 dòng!', 'Kết hợp <code>@timer</code> + <code>@lru_cache</code> để đo hiệu năng thuật toán.'],
+  },
+
+  modules: {
+    desc: 'Import và tổ chức code với modules & packages.',
+    code: `# Basic import
+import math
+from math import sqrt, pi
+from math import *        # avoid
+import numpy as np
+
+# Relative import (inside package)
+from . import sibling_module
+from ..parent import thing
+
+# Package structure (use __init__.py)
+# mypackage/
+#   __init__.py
+#   module_a.py
+#   subpackage/
+#     __init__.py
+#     module_b.py
+
+# if __name__ == "__main__"
+if __name__ == "__main__":
+    main()
+
+# Useful built-in modules
+import sys, os, datetime, json, re, random, collections`,
+  },
+
+  exceptions: {
+    desc: 'Bắt và xử lý lỗi với try/except/else/finally.',
+    code: `try:
+    result = 10 / 0
+except ZeroDivisionError as e:
+    print(f"Error: {e}")
+except (ValueError, TypeError):
+    print("Value or Type error")
+else:
+    print("No error!")
+finally:
+    print("Always runs")
+
+# Custom exception
+class MyError(Exception):
+    def __init__(self, msg, code=500):
+        self.code = code
+        super().__init__(msg)
+
+# Raising
+raise MyError("Something went wrong", 400)
+# raise from - preserve chain
+raise RuntimeError("wrap") from e`,
+  },
+
+  files: {
+    desc: 'Đọc/ghi file an toàn với context manager.',
+    code: `# With - auto close
+with open("file.txt", "r", encoding="utf-8") as f:
+    content = f.read()        # whole file
+for line in content.splitlines():
+    pass
+
+with open("file.txt", "r") as f:
+    for line in f:            # read line by line
+        print(line.strip())
+
+# Write
+with open("out.txt", "w") as f:
+    f.write("Hello\\n")
+
+# Modes: r, w, a, r+, w+, a+, rb, wb
+
+# Working with paths
+from pathlib import Path
+p = Path("data/file.txt")
+p.exists(); p.is_file(); p.suffix
+p.parent; p.stem; p.name
+for f in Path(".").glob("*.py"): print(f)`,
+    highlights: ['<code>with</code> statement tự động đóng file, tránh leak tài nguyên.', '<code>pathlib.Path</code> hiện đại hơn <code>os.path</code>, hỗ trợ glob, dễ đọc.'],
+  },
+
+  typing: {
+    desc: 'Gợi ý kiểu dữ liệu (Python 3.6+) giúp code rõ ràng, IDE hỗ trợ tốt hơn.',
+    code: `from typing import List, Dict, Tuple, Optional, Union, Callable
+
+# Function annotations
+def greet(name: str, age: int = 0) -> str:
+    return f"{name} is {age} years old"
+
+# Complex types
+def process(
+    items: List[int],
+    config: Dict[str, float]
+) -> Optional[Tuple[int, float]]:
+    if not items:
+        return None
+    return (len(items), sum(items) / len(items))
+
+# Python 3.10+: use | instead of Union
+def get_value() -> int | str | None:
+    return 42
+
+# Type aliases
+Vector = List[float]
+Matrix = List[Vector]
+
+# Callable: function type
+def apply(
+    func: Callable[[int, int], int],
+    a: int, b: int
+) -> int:
+    return func(a, b)
+
+# Generic types: TypeVar
+from typing import TypeVar
+T = TypeVar('T')
+def first(items: List[T]) -> T:
+    return items[0]`,
+    highlights: ['Type hints không ảnh hưởng runtime nhưng giúp IDE autocomplete, phát hiện lỗi sớm.', 'Python 3.10+ dùng <code>X | Y</code> thay vì <code>Union[X, Y]</code>.', '<code>Optional[X]</code> tương đương <code>X | None</code>.'],
+  },
+
+  async: {
+    desc: 'Lập trình bất đồng bộ (Python 3.5+) – xử lý I/O hiệu quả không blocking.',
+    code: `import asyncio
+
+# Basic coroutine
+async def fetch_data(url: str) -> str:
+    print(f"Fetching {url}...")
+    await asyncio.sleep(1)  # simulates I/O
+    return f"Data from {url}"
+
+# Running coroutines
+async def main():
+    result = await fetch_data("https://api.example.com")
+    print(result)
+
+asyncio.run(main())
+
+# Concurrent execution
+async def fetch_all():
+    tasks = [fetch_data(f"url{i}") for i in range(3)]
+    results = await asyncio.gather(*tasks)
+    return results  # all results in order
+
+# asyncio.wait with timeout
+async def race():
+    tasks = [fetch_data(f"url{i}") for i in range(5)]
+    done, pending = await asyncio.wait(tasks, timeout=2.0)
+    for task in done:
+        print(task.result())
+
+# Async context manager
+async def write_async():
+    async with aiofiles.open("data.txt", "w") as f:
+        await f.write("Hello async!")`,
+    highlights: ['<code>async/await</code> không dùng multi-thread – chạy trên 1 thread với event loop.', '<code>asyncio.gather()</code> chạy nhiều coroutine đồng thời, đợi tất cả hoàn thành.', 'Dùng cho I/O-bound tasks: API calls, DB queries, file operations.'],
+  },
+
+  algo: {
+    desc: 'Các module built-in giúp giải thuật toán hiệu quả trong phỏng vấn và thực tế.',
+    code: `from collections import deque, Counter, defaultdict, OrderedDict
+from heapq import heappush, heappop, heapify, nlargest, nsmallest
+from itertools import permutations, combinations, product
+from functools import lru_cache, reduce
+import bisect
+
+# ---- collections ----
+# deque: O(1) cho appendleft/popleft
+q = deque([1,2,3]); q.appendleft(0); q.popleft()
+
+# Counter: frequency map
+c = Counter("mississippi")   # {'i': 4, 's': 4, 'p': 2, 'm': 1}
+c.most_common(2)             # [('i', 4), ('s', 4)]
+
+# defaultdict: auto default value
+d = defaultdict(list)
+d["key"].append(1)  # no KeyError!
+
+# ---- heapq (Min Heap) ----
+h = []; heappush(h, 3); heappush(h, 1); heappush(h, 2)
+heappop(h)   # 1 (smallest)
+heapify(arr) # O(n) vs O(n log n) for push loop
+nlargest(2, arr); nsmallest(2, arr)
+# Max heap: push -value, pop -value
+
+# ---- bisect (binary search) ----
+arr = [1, 3, 5, 7, 9]
+bisect.bisect_left(arr, 5)   # 2 (first >= 5)
+bisect.bisect_right(arr, 5)  # 3 (first > 5)
+bisect.insort(arr, 6)        # insert in sorted order
+
+# ---- itertools ----
+# Permutations & Combinations
+list(permutations([1,2,3], 2))   # nPr
+list(combinations([1,2,3], 2))   # nCr
+list(product([1,2], [3,4]))      # cartesian: (1,3)(1,4)(2,3)(2,4)
+
+# Infinite iterators
+from itertools import count, cycle, repeat
+count(10, 2)          # 10, 12, 14...
+cycle('AB')           # A B A B...
+repeat('x', 3)        # x x x
+
+# accumulate, chain, groupby
+from itertools import accumulate, chain, groupby
+list(accumulate([1,2,3]))  # [1,3,6]
+list(chain('AB', 'CD'))    # A B C D
+
+# ---- functools ----
+@lru_cache(maxsize=None)
+def fib(n):
+    if n < 2: return n
+    return fib(n-1) + fib(n-2)  # O(n) with cache!
+
+# cmp_to_key: convert cmp func to key
+from functools import cmp_to_key
+sorted(arr, key=cmp_to_key(lambda a, b: a - b))`,
+    highlights: [
+      '<span class="tag algo">Heap</span> Min Heap mặc định. Max Heap = push/pop <code>-value</code>. Dùng cho Dijkstra, Top K, merge K sorted.',
+      '<span class="tag algo">Binary Search</span> <code>bisect</code> O(log n) – thay thế triển khai thủ công, tránh bug off-by-one.',
+      '<span class="tag algo">Memoization</span> <code>@lru_cache</code> biến đệ quy DP thành O(n) tự động.',
+      '<span class="tag algo">Permutation</span> <code>itertools.permutations/combinations</code> sinh tổ hợp chỉnh hợp chuẩn, nhanh.',
+      '<span class="tag algo">Counter</span> Xây dựng frequency map O(n) – nền tảng của sliding window, anagram, palindrome.',
+      '<span class="tag algo">defaultdict</span> Tránh <code>if key not in dict</code> – code sạch hơn khi nhóm phần tử.',
+    ],
+  },
+
+  misc: {
+    desc: 'Các thủ thuật Python hữu ích khác.',
+    code: `# zip & enumerate
+for i, val in enumerate(arr):    # index + value
+    print(i, val)
+
+names = ["A", "B"]; scores = [90, 80]
+for n, s in zip(names, scores):  # parallel iteration
+    print(n, s)
+
+# any() / all()
+any([False, True, False])   # True
+all([True, True, False])    # False
+all(3 < x < 10 for x in arr) # generator expression
+
+# Ternary
+x = "yes" if condition else "no"
+
+# Unpacking
+first, *middle, last = [1,2,3,4,5]  # first=1, middle=[2,3,4], last=5
+
+# Copy
+import copy
+b = copy.deepcopy(complex_obj)
+
+# Enumerate with start
+list(enumerate("abc", start=1))  # [(1,'a'), (2,'b'), (3,'c')]
+
+# Multiple assignment
+x = y = z = 0       # same value
+a, b = 1, 2         # tuple unpacking
+
+# Infinity & NaN
+float('inf'); float('-inf'); float('nan')
+
+# Walrus operator (Python 3.8+)
+if (n := len(data)) > 10:
+    print(f"Too many: {n}")`,
+    highlights: ['<span class="tag algo">Thuật toán</span> <code>zip()</code> và <code>enumerate()</code> dùng mọi lúc khi duyệt song song hoặc cần index.', '<span class="tag algo">Thuật toán</span> <code>any()/all()</code> kiểm tra điều kiện trên iterable, thường gặp trong sliding window.', '<code>:=</code> (walrus operator) gán giá trị trong biểu thức – Python 3.8+.'],
+  },
+
+  glossary: [
+    { term: 'LEGB', def: '<strong>L</strong>ocal → <strong>E</strong>nclosing → <strong>G</strong>lobal → <strong>B</strong>uilt-in. Thứ tự Python tìm kiếm tên biến khi thực thi. Hiểu LEGB giúp tránh lỗi <code>UnboundLocalError</code> và debug đệ quy.' },
+    { term: 'MRO', def: '<strong>M</strong>ethod <strong>R</strong>esolution <strong>O</strong>rder – thứ tự Python tìm method trong kế thừa đa cấp. Sử dụng thuật toán C3 Linearization. Xem bằng <code>ClassName.mro()</code> hoặc <code>ClassName.__mro__</code>.' },
+    { term: 'O(1) / O(n) / O(log n)', def: '<strong>Big O Notation</strong> – độ phức tạp thời gian. <strong>O(1)</strong>: hằng số (dict lookup), <strong>O(log n)</strong>: chia đôi (binary search), <strong>O(n)</strong>: tuyến tính (duyệt mảng), <strong>O(n log n)</strong>: sắp xếp nhanh, <strong>O(n²)</strong>: lồng 2 vòng for.' },
+    { term: 'Mutable / Immutable', def: '<strong>Mutable</strong> (có thể thay đổi): <code>list</code>, <code>dict</code>, <code>set</code>, <code>bytearray</code>. <strong>Immutable</strong> (không thay đổi): <code>int</code>, <code>float</code>, <code>str</code>, <code>tuple</code>, <code>frozenset</code>, <code>bytes</code>. Immutable object có thể làm key trong dict/set.' },
+    { term: 'LIFO / FIFO', def: '<strong>LIFO</strong> (Last In, First Out) – Stack (ngăn xếp), dùng <code>list.append()</code> + <code>list.pop()</code>. <strong>FIFO</strong> (First In, First Out) – Queue (hàng đợi), dùng <code>collections.deque</code> với <code>append()</code> + <code>popleft()</code>.' },
+    { term: 'Iterable / Iterator', def: '<strong>Iterable</strong>: object có thể duyệt qua (có <code>__iter__()</code>). Ví dụ: <code>list</code>, <code>tuple</code>, <code>str</code>, <code>dict</code>. <strong>Iterator</strong>: object sinh giá trị tuần tự (có <code>__next__()</code>). Dùng <code>iter()</code> để chuyển iterable thành iterator.' },
+    { term: 'Generator', def: 'Hàm dùng <code>yield</code> thay vì <code>return</code>. Trả về generator object (iterator), sinh giá trị lười (lazy) – chỉ tính khi cần. Tiết kiệm bộ nhớ khi xử lý dữ liệu lớn. Cú pháp rút gọn: <code>(x**2 for x in range(n))</code>.' },
+    { term: 'Coroutine', def: 'Hàm bất đồng bộ khai báo với <code>async def</code>, dùng <code>await</code> để tạm dừng chờ tác vụ I/O. Chạy trên event loop (không phải thread). Khác với generator: coroutine là consumer, generator là producer.' },
+    { term: 'Decorator', def: 'Hàm wrapper bọc quanh hàm khác để thêm chức năng mà không sửa code gốc. Ký hiệu <code>@decorator_name</code>. Ví dụ: <code>@staticmethod</code>, <code>@lru_cache</code>, <code>@property</code>. Thực chất là <code>func = decorator(func)</code>.' },
+    { term: 'Context Manager', def: 'Object quản lý tài nguyên với <code>__enter__()</code> và <code>__exit__()</code>. Dùng với <code>with</code> statement để tự động dọn dẹp. Ví dụ: <code>open()</code>, <code>threading.Lock</code>. Có thể tự tạo bằng <code>contextlib.contextmanager</code>.' },
+    { term: 'Dunder Methods', def: '<strong>D</strong>ouble <strong>Under</strong>score Methods – các method đặc biệt: <code>__init__</code>, <code>__str__</code>, <code>__repr__</code>, <code>__len__</code>, <code>__getitem__</code>, <code>__lt__</code>, <code>__eq__</code>, <code>__hash__</code>, <code>__call__</code>. Cho phép object tương tác với toán tử Python.' },
+    { term: 'Duck Typing', def: '"Nếu nó đi như vịt, kêu như vịt thì nó là vịt". Python không kiểm tra kiểu khi compile mà dựa vào behavior (method/property). Linh hoạt nhưng cần cẩn thận khi gọi method không tồn tại.' },
+    { term: 'GIL', def: '<strong>G</strong>lobal <strong>I</strong>nterpreter <strong>L</strong>ock – khóa toàn cục trong CPython, chỉ cho phép 1 thread chạy Python bytecode tại một thời điểm. Không ảnh hưởng đến multi-processing hoặc I/O-bound async code.' },
+    { term: '*args / **kwargs', def: '<code>*args</code>: nhận tham số vị trí dư thành <code>tuple</code>. <code>**kwargs</code>: nhận tham số keyword dư thành <code>dict</code>. Dùng trong decorator và hàm tổng quát. <code>*</code> còn dùng để unpack list/tuple khi gọi hàm.' },
+    { term: 'Memoization', def: 'Kỹ thuật lưu kết quả hàm để tái sử dụng, tránh tính lại. Trong Python dùng <code>@functools.lru_cache(maxsize=None)</code>. Biến đệ quy Fibonacci từ O(2ⁿ) thành O(n) với 1 dòng code.' },
+    { term: 'Hashable', def: 'Object có thể làm key trong <code>dict</code> hoặc phần tử trong <code>set</code>. Phải có <code>__hash__()</code> và <code>__eq__()</code>. Immutable type mặc định hashable. Mutable type như <code>list</code>, <code>dict</code> thì không.' },
+    { term: 'Closure', def: 'Hàm con (inner function) ghi nhớ biến từ phạm vi cha (enclosing scope) ngay cả khi hàm cha đã kết thúc. Dùng <code>nonlocal</code> để sửa biến enclosing. Là nền tảng của decorator.' },
+    { term: 'Comprehension', def: 'Cú pháp rút gọn tạo <code>list</code>, <code>dict</code>, <code>set</code> từ iterable. Ví dụ: <code>[x**2 for x in range(10) if x % 2 == 0]</code>. Nhanh hơn vòng lặp for thường vì được implement ở C level.' },
+    { term: 'f-string', def: 'Định dạng chuỗi nội suy từ Python 3.6+: <code>f"Hello {name}!"</code>. Nhanh hơn <code>.format()</code> và <code>%</code>. Hỗ trợ biểu thức: <code>f"{a + b = }"</code> (Python 3.8+).' },
+    { term: 'Walrus Operator (:=)', def: 'Toán tử gán trong biểu thức (Python 3.8+). Cho phép gán và kiểm tra trong 1 dòng: <code>if (n := len(data)) > 10:</code>. Hữu ích trong while loop và list comprehension.' },
+    { term: 'Type Hint', def: 'Gợi ý kiểu dữ liệu (Python 3.5+): <code>def f(x: int) -> str:</code>. Không ép kiểu khi runtime nhưng giúp IDE autocomplete, static type checker (mypy), và document code rõ ràng hơn.' },
+    { term: 'Pickle / JSON', def: '<strong>pickle</strong>: serialize Python object sang bytes (binary), dùng cho cache, lưu model ML. <strong>json</strong>: serialize sang chuỗi JSON (text), tương thích nhiều ngôn ngữ. Luôn dùng JSON nếu cần cross-platform.' },
+    { term: 'import vs from import', def: '<code>import module</code>: import toàn bộ module, truy cập qua <code>module.name</code>. <code>from module import name</code>: import trực tiếp vào namespace, tiện nhưng dễ bị name collision. Tránh <code>from module import *</code>.' },
+    { term: '__name__ == "__main__"', def: 'Guard block để code chỉ chạy khi file được thực thi trực tiếp, không chạy khi bị import. Luôn đặt main logic trong block này để module có thể import an toàn.' },
+    { term: 'DRY / KISS', def: '<strong>DRY</strong>: Don\'t Repeat Yourself – không lặp code, dùng hàm/module. <strong>KISS</strong>: Keep It Simple, Stupid – giữ code đơn giản, dễ hiểu. Nguyên tắc cốt lõi trong Pythonic coding.' },
+  ],
+};
+
+// ============================================================================
+// ENGLISH
+// ============================================================================
+langData.en = {
+  title: 'Python Cheat Sheet – From Basic to Advanced',
+  footer: 'Python Cheat Sheet – Made with ❤️ for learners & developers.',
+  introTitle: '🐍 Introduction to Python',
+  introWhyTitle: 'Why Choose Python?',
+  introFutureTitle: '📈 Future Trends',
+  introText: 'Python is a high-level, interpreted, object-oriented programming language with clean, readable syntax. Created by Guido van Rossum (1991), Python is now one of the most popular languages in the world.',
+  introWhy: [
+    { h: 'Clean, Easy Syntax', p: 'Minimal boilerplate, focus on logic. Learn fast, code fast.' },
+    { h: 'Massive Ecosystem', p: 'Libraries for Data Science (NumPy, Pandas), ML (PyTorch, TensorFlow), Web (Django, FastAPI), Automation.' },
+    { h: 'Strong for Algorithms', p: 'Powerful built-in data structures (list, dict, set). Module collections, heapq, bisect, itertools, functools make algorithm coding easy.' },
+    { h: 'Large Community', p: 'Rich documentation, Stack Overflow, GitHub – easy to find help.' },
+    { h: 'Cross-Platform', p: 'Runs on Windows, macOS, Linux. Write once, run everywhere.' },
+    { h: 'AI/ML Future', p: 'Python is the #1 language for AI, Machine Learning, Data Science.' },
+  ],
+  introFuture: [
+    'Python continues to lead in AI/ML and data science.',
+    'New versions improve performance (Python 3.11+ is 10-60% faster with adaptive interpreter).',
+    'WebAssembly (Wasm) enables Python in browsers (PyScript).',
+    'Deep integration with Cloud, DevOps, and automation.',
+    'Python is an essential skill for modern software engineers.',
+  ],
+
+  navIntro: 'Intro',
+  navBasics: '1. Basics',
+  navFunctions: '2. Functions',
+  navDataStructures: '3. Data Structs',
+  navStrings: '4. Strings',
+  navOOP: '5. OOP',
+  navComprehensions: '6. Comprehensions',
+  navLambda: '7. Lambda',
+  navIterators: '8. Generators',
+  navDecorators: '9. Decorators',
+  navModules: '10. Modules',
+  navExceptions: '11. Exceptions',
+  navFiles: '12. Files',
+  navTyping: '13. Type Hints',
+  navAsync: '14. Async/Await',
+  navAlgo: '15. Algorithms',
+  navMisc: '16. Tips',
+  navGlossary: 'Glossary',
+
+  secBasics: '1. Basics',
+  secFunctions: '2. Functions & Scope',
+  secDataStructures: '3. Data Structures',
+  secStrings: '4. Strings',
+  secOOP: '5. Object-Oriented Programming',
+  secComprehensions: '6. Comprehensions',
+  secLambda: '7. Lambda, Map, Filter, Reduce',
+  secIterators: '8. Iterators & Generators',
+  secDecorators: '9. Decorators',
+  secModules: '10. Modules & Packages',
+  secExceptions: '11. Exception Handling',
+  secFiles: '12. File I/O',
+  secTyping: '13. Type Hints',
+  secAsync: '14. Async / Await',
+  secAlgo: '15. ⚡ Libraries for Algorithms',
+  secMisc: '16. Tips & Tricks',
+  secGlossary: '📖 Glossary',
+
+  basics: {
+    desc: 'Variables, data types, operators, and basic control flow.',
+    code: `# Variables & Data Types
+x = 10              # int
+y = 3.14            # float
+name = "Python"     # str
+is_active = True    # bool
+items = [1, 2, 3]   # list
+t = (1, 2)          # tuple (immutable)
+s = {1, 2, 3}       # set
+d = {"a": 1}        # dict
+
+# Type checking
+print(type(x))      # <class 'int'>
+print(isinstance(x, int))  # True
+
+# Operators
+a = 10; b = 3
+print(a // b)   # 3   (floor division)
+print(a % b)    # 1   (modulo)
+print(a ** b)   # 1000 (power)
+print(a == 10 and b == 3)  # True
+print(not False)  # True
+
+# Control Flow
+if x > 5:
+    print("big")
+elif x == 5:
+    pass
+else:
+    print("small")
+
+for i in range(5):   # 0..4
+    print(i)
+
+while x > 0:
+    x -= 1`,
+    highlights: ['Use <code>isinstance()</code> instead of <code>type() == </code> for type checking.', '<code>//</code> (floor division) and <code>%</code> (modulo) are very useful in divide & conquer and loops.'],
+  },
+
+  functions: {
+    desc: 'Function definition, parameters, variable scope (LEGB rule).',
+    code: `# Function definition
+def add(a, b):
+    """Docstring: Add two numbers."""
+    return a + b
+
+# Default & keyword args
+def greet(name, greeting="Hello"):
+    return f"{greeting}, {name}!"
+
+greet("World")              # "Hello, World!"
+greet("Nam", "Xin chào")    # "Xin chào, Nam!"
+
+# *args and **kwargs
+def var_args(*args, **kwargs):
+    print(args)    # tuple
+    print(kwargs)  # dict
+
+var_args(1, 2, x="hello")
+
+# Scope: LEGB rule
+# Local -> Enclosing -> Global -> Built-in
+x = "global"
+def outer():
+    x = "enclosing"
+    def inner():
+        nonlocal x   # modifies enclosing x
+        x = "inner"
+    inner()
+    return x   # "inner"`,
+    highlights: ['Use <code>*args</code> (tuple) and <code>**kwargs</code> (dict) for flexible functions.', 'LEGB Rule: Local → Enclosing → Global → Built-in. Crucial when debugging recursive algorithms.'],
+  },
+
+  data_structures: {
+    desc: 'List, Tuple, Set, Dict – choosing the right structure optimizes your algorithm.',
+    code: `# === LIST (mutable, ordered) ===
+arr = [1, 2, 3]
+arr.append(4)       # O(1) amortized
+arr.pop()           # O(1)
+arr.insert(0, 0)    # O(n)
+arr.sort()          # O(n log n), in-place
+arr2 = sorted(arr)  # returns new list
+arr[-1]             # last element
+
+# List as Stack
+stack = []; stack.append(1); stack.append(2)
+stack.pop()  # 2 (LIFO)
+
+# List as Queue (use collections.deque for O(1))
+from collections import deque
+q = deque(); q.append(1); q.append(2)
+q.popleft()  # 1 (FIFO)
+
+# Slicing: [start:stop:step]
+arr = [0,1,2,3,4,5]
+arr[1:4]    # [1,2,3]
+arr[::-1]   # [5,4,3,2,1,0] - reverse
+
+# === TUPLE (immutable) ===
+t = (1, 2, 3)
+a, b, c = t   # unpacking
+# Swap: a, b = b, a
+
+# === SET (unordered, unique) ===
+s = {1, 2, 3}; s.add(4); s.remove(2)
+a = {1,2,3}; b = {2,3,4}
+a | b  # union: {1,2,3,4}
+a & b  # intersection: {2,3}
+a - b  # difference: {1}
+a ^ b  # symmetric diff: {1,4}
+# O(1) average lookup!
+
+# === DICT (key-value, hash map) ===
+d = {'a': 1, 'b': 2}
+d['c'] = 3         # set
+d.get('z', 0)      # 0 (default)
+d.setdefault('x', 99)
+for k, v in d.items(): pass
+d.keys(); d.values()  # dynamic views`,
+    highlights: [
+      '<span class="tag algo">Algorithm</span> <strong>Set/Dict O(1) lookup</strong> – use instead of list for fast existence checks.',
+      '<span class="tag algo">Algorithm</span> <strong>collections.deque</strong> – O(1) queue instead of list.pop(0) O(n).',
+      '<span class="tag algo">Algorithm</span> <strong>Slicing</strong> and <strong>negative indexing</strong> are powerful for subarray processing.',
+    ],
+  },
+
+  strings: {
+    desc: 'String formatting, slicing, and useful methods.',
+    code: `# Formatting
+name = "Python"
+f"Hello {name}!"          # f-string (3.6+)
+"{} {}".format(1, 2)      # format method
+"%.2f" % 3.14159          # old-style: "3.14"
+
+# Common methods
+s = "  Hello World  "
+s.strip()        # "Hello World"
+s.lower()        # case
+s.upper()
+s.replace("World", "Python")
+s.split()        # ['Hello', 'World']
+", ".join(["a","b","c"])  # "a, b, c"
+"abc".find("b")  # 1 (or -1)
+"one;two".partition(";")  # ("one", ";", "two")
+
+# Checkers
+"123".isdigit()     # True
+"abc".isalpha()     # True
+"hello".startswith("he")
+
+# Char ↔ Code
+ord('A')   # 65
+chr(65)    # 'A'`,
+    highlights: ['<span class="tag algo">Algorithm</span> <code>join()</code> is faster than <code>+=</code> in loops (O(n) vs O(n²)).', '<code>ord()</code> / <code>chr()</code> useful for character problems (anagram, frequency array).'],
+  },
+
+  oop: {
+    desc: 'Classes, inheritance, magic methods (dunder).',
+    code: `class Dog:
+    species = "Canis familiaris"  # class attribute
+
+    def __init__(self, name, age):
+        self.name = name   # instance attribute
+        self.age = age
+
+    def __str__(self):
+        return f"{self.name} ({self.age})"
+
+    def __repr__(self):
+        return f"Dog(name='{self.name}', age={self.age})"
+
+    def __lt__(self, other):
+        return self.age < other.age
+
+class Retriever(Dog):
+    def fetch(self):
+        return f"{self.name} fetches!"
+
+# Multiple inheritance (MRO: C3 linearization)
+class A: pass
+class B(A): pass
+class C(A): pass
+class D(B, C): pass
+# D.mro() -> D -> B -> C -> A -> object
+
+# @property
+class Circle:
+    def __init__(self, r): self._r = r
+    @property
+    def area(self): return 3.14 * self._r ** 2
+
+c = Circle(5)
+print(c.area)  # no parentheses!`,
+    highlights: ['<span class="tag algo">Algorithm</span> <code>__lt__</code>, <code>__eq__</code>, <code>__hash__</code> are crucial when using objects as dict/set keys or sorting.', '<code>@property</code> provides clean computed attributes, no need for getter/setter.'],
+  },
+
+  comprehensions: {
+    desc: 'List, dict, set comprehension – concise and faster than regular loops.',
+    code: `# List comprehension
+squares = [x**2 for x in range(10)]
+evens = [x for x in range(20) if x % 2 == 0]
+
+# Nested
+matrix = [[i*j for j in range(3)] for i in range(3)]
+
+# Dict comprehension
+d = {x: x**2 for x in range(5)}        # {0:0, 1:1, 2:4, ...}
+d = {v: k for k, v in d.items()}       # swap
+
+# Set comprehension
+s = {x % 3 for x in range(10)}         # unique mod values
+
+# Generator expression (lazy, memory efficient)
+gen = (x**2 for x in range(10**6))
+sum(gen)  # computes on the fly`,
+    highlights: ['<span class="tag algo">Algorithm</span> List comprehension is faster than a regular for loop.', '<span class="tag algo">Algorithm</span> Generator expression (parentheses <code>()</code>) saves memory when processing large data.'],
+  },
+
+  lambda_map: {
+    desc: 'Lambda for anonymous functions, map/filter/reduce for functional style.',
+    code: `# Lambda
+add = lambda a, b: a + b
+sorted(items, key=lambda x: x[1])       # sort by index 1
+sorted(items, key=lambda x: (-x[0], x[1]))  # descending + ascending
+
+# Map: apply function to every element
+nums = [1, 2, 3]
+list(map(str, nums))   # ['1', '2', '3']
+
+# Filter: keep elements where function returns True
+list(filter(lambda x: x > 1, nums))  # [2, 3]
+
+# Reduce: accumulate (need functools)
+from functools import reduce
+reduce(lambda acc, x: acc + x, nums, 0)  # 6
+
+# Functional + comprehension
+# Prefer: [x*2 for x in nums if x > 1]`,
+    highlights: ['<span class="tag algo">Algorithm</span> <code>key=lambda</code> in <code>sorted()</code> is an extremely common pattern for sorting 2D arrays and objects.', '<code>reduce()</code> useful for fold/accumulate patterns.'],
+  },
+
+  iterators: {
+    desc: 'Iterator protocol, generator (yield) – the foundation of lazy evaluation.',
+    code: `# Iterator protocol
+class CountDown:
+    def __init__(self, start):
+        self.current = start
+    def __iter__(self):
+        return self
+    def __next__(self):
+        if self.current <= 0: raise StopIteration
+        self.current -= 1
+        return self.current + 1
+
+for n in CountDown(5): print(n)  # 5 4 3 2 1
+
+# Generator function (yield)
+def fibonacci(limit):
+    a, b = 0, 1
+    while a < limit:
+        yield a
+        a, b = b, a + b
+
+list(fibonacci(100))  # [0,1,1,2,3,5,8,13...]
+
+# yield from
+def chain(*iterables):
+    for it in iterables:
+        yield from it
+
+# Generator expression (lazy)
+sum(x*x for x in range(10**7) if x % 3 == 0)`,
+    highlights: ['<span class="tag algo">Algorithm</span> <code>yield</code> allows traversing large data without loading everything into RAM.', '<span class="tag algo">Algorithm</span> Generators are the foundation of lazy BFS/DFS and infinite streams.'],
+  },
+
+  decorators: {
+    desc: 'Wrapper functions without changing original code. Very powerful pattern.',
+    code: `# Basic decorator
+def timer(func):
+    import time
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        result = func(*args, **kwargs)
+        print(f"{func.__name__}: {time.time()-start:.4f}s")
+        return result
+    return wrapper
+
+@timer
+def slow_func():
+    s = 0
+    for i in range(10**7): s += i
+    return s
+
+# Decorator with arguments
+def repeat(n):
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            for _ in range(n):
+                result = func(*args, **kwargs)
+            return result
+        return wrapper
+    return decorator
+
+@repeat(3)
+def say_hello(): print("Hello")
+
+# Common decorators
+# @staticmethod, @classmethod
+# @property (already covered)
+# @functools.lru_cache  -- memoization!
+# @functools.wraps      -- preserve metadata`,
+    highlights: ['<span class="tag algo">Algorithm</span> <code>@functools.lru_cache</code> is automatic memoization – optimize DP/recursion with 1 line!', 'Combine <code>@timer</code> + <code>@lru_cache</code> to measure algorithm performance.'],
+  },
+
+  modules: {
+    desc: 'Import and organize code with modules & packages.',
+    code: `# Basic import
+import math
+from math import sqrt, pi
+from math import *        # avoid
+import numpy as np
+
+# Relative import (inside package)
+from . import sibling_module
+from ..parent import thing
+
+# Package structure (use __init__.py)
+# mypackage/
+#   __init__.py
+#   module_a.py
+#   subpackage/
+#     __init__.py
+#     module_b.py
+
+# if __name__ == "__main__"
+if __name__ == "__main__":
+    main()
+
+# Useful built-in modules
+import sys, os, datetime, json, re, random, collections`,
+  },
+
+  exceptions: {
+    desc: 'Catch and handle errors with try/except/else/finally.',
+    code: `try:
+    result = 10 / 0
+except ZeroDivisionError as e:
+    print(f"Error: {e}")
+except (ValueError, TypeError):
+    print("Value or Type error")
+else:
+    print("No error!")
+finally:
+    print("Always runs")
+
+# Custom exception
+class MyError(Exception):
+    def __init__(self, msg, code=500):
+        self.code = code
+        super().__init__(msg)
+
+# Raising
+raise MyError("Something went wrong", 400)
+# raise from - preserve chain
+raise RuntimeError("wrap") from e`,
+  },
+
+  files: {
+    desc: 'Safe file read/write with context manager.',
+    code: `# With - auto close
+with open("file.txt", "r", encoding="utf-8") as f:
+    content = f.read()        # whole file
+for line in content.splitlines():
+    pass
+
+with open("file.txt", "r") as f:
+    for line in f:            # read line by line
+        print(line.strip())
+
+# Write
+with open("out.txt", "w") as f:
+    f.write("Hello\\n")
+
+# Modes: r, w, a, r+, w+, a+, rb, wb
+
+# Working with paths
+from pathlib import Path
+p = Path("data/file.txt")
+p.exists(); p.is_file(); p.suffix
+p.parent; p.stem; p.name
+for f in Path(".").glob("*.py"): print(f)`,
+    highlights: ['<code>with</code> statement auto-closes files, preventing resource leaks.', '<code>pathlib.Path</code> is more modern than <code>os.path</code>, supports glob, easier to read.'],
+  },
+
+  typing: {
+    desc: 'Type hints (Python 3.6+) make code clearer and IDEs more helpful.',
+    code: `from typing import List, Dict, Tuple, Optional, Union, Callable
+
+# Function annotations
+def greet(name: str, age: int = 0) -> str:
+    return f"{name} is {age} years old"
+
+# Complex types
+def process(
+    items: List[int],
+    config: Dict[str, float]
+) -> Optional[Tuple[int, float]]:
+    if not items:
+        return None
+    return (len(items), sum(items) / len(items))
+
+# Python 3.10+: use | instead of Union
+def get_value() -> int | str | None:
+    return 42
+
+# Type aliases
+Vector = List[float]
+Matrix = List[Vector]
+
+# Callable: function type
+def apply(
+    func: Callable[[int, int], int],
+    a: int, b: int
+) -> int:
+    return func(a, b)
+
+# Generic types: TypeVar
+from typing import TypeVar
+T = TypeVar('T')
+def first(items: List[T]) -> T:
+    return items[0]`,
+    highlights: ['Type hints do not affect runtime but help IDE autocomplete and catch errors early.', 'Python 3.10+ uses <code>X | Y</code> instead of <code>Union[X, Y]</code>.', '<code>Optional[X]</code> is equivalent to <code>X | None</code>.'],
+  },
+
+  async: {
+    desc: 'Asynchronous programming (Python 3.5+) – efficient non-blocking I/O.',
+    code: `import asyncio
+
+# Basic coroutine
+async def fetch_data(url: str) -> str:
+    print(f"Fetching {url}...")
+    await asyncio.sleep(1)  # simulates I/O
+    return f"Data from {url}"
+
+# Running coroutines
+async def main():
+    result = await fetch_data("https://api.example.com")
+    print(result)
+
+asyncio.run(main())
+
+# Concurrent execution
+async def fetch_all():
+    tasks = [fetch_data(f"url{i}") for i in range(3)]
+    results = await asyncio.gather(*tasks)
+    return results  # all results in order
+
+# asyncio.wait with timeout
+async def race():
+    tasks = [fetch_data(f"url{i}") for i in range(5)]
+    done, pending = await asyncio.wait(tasks, timeout=2.0)
+    for task in done:
+        print(task.result())
+
+# Async context manager
+async def write_async():
+    async with aiofiles.open("data.txt", "w") as f:
+        await f.write("Hello async!")`,
+    highlights: ['<code>async/await</code> does not use multi-threading – runs on a single thread with an event loop.', '<code>asyncio.gather()</code> runs multiple coroutines concurrently, waiting for all to complete.', 'Use for I/O-bound tasks: API calls, DB queries, file operations.'],
+  },
+
+  algo: {
+    desc: 'Built-in modules for efficient algorithm problem-solving in interviews and practice.',
+    code: `from collections import deque, Counter, defaultdict, OrderedDict
+from heapq import heappush, heappop, heapify, nlargest, nsmallest
+from itertools import permutations, combinations, product
+from functools import lru_cache, reduce
+import bisect
+
+# ---- collections ----
+# deque: O(1) for appendleft/popleft
+q = deque([1,2,3]); q.appendleft(0); q.popleft()
+
+# Counter: frequency map
+c = Counter("mississippi")   # {'i': 4, 's': 4, 'p': 2, 'm': 1}
+c.most_common(2)             # [('i', 4), ('s', 4)]
+
+# defaultdict: auto default value
+d = defaultdict(list)
+d["key"].append(1)  # no KeyError!
+
+# ---- heapq (Min Heap) ----
+h = []; heappush(h, 3); heappush(h, 1); heappush(h, 2)
+heappop(h)   # 1 (smallest)
+heapify(arr) # O(n) vs O(n log n) for push loop
+nlargest(2, arr); nsmallest(2, arr)
+# Max heap: push -value, pop -value
+
+# ---- bisect (binary search) ----
+arr = [1, 3, 5, 7, 9]
+bisect.bisect_left(arr, 5)   # 2 (first >= 5)
+bisect.bisect_right(arr, 5)  # 3 (first > 5)
+bisect.insort(arr, 6)        # insert in sorted order
+
+# ---- itertools ----
+# Permutations & Combinations
+list(permutations([1,2,3], 2))   # nPr
+list(combinations([1,2,3], 2))   # nCr
+list(product([1,2], [3,4]))      # cartesian: (1,3)(1,4)(2,3)(2,4)
+
+# Infinite iterators
+from itertools import count, cycle, repeat
+count(10, 2)          # 10, 12, 14...
+cycle('AB')           # A B A B...
+repeat('x', 3)        # x x x
+
+# accumulate, chain, groupby
+from itertools import accumulate, chain, groupby
+list(accumulate([1,2,3]))  # [1,3,6]
+list(chain('AB', 'CD'))    # A B C D
+
+# ---- functools ----
+@lru_cache(maxsize=None)
+def fib(n):
+    if n < 2: return n
+    return fib(n-1) + fib(n-2)  # O(n) with cache!
+
+# cmp_to_key: convert cmp func to key
+from functools import cmp_to_key
+sorted(arr, key=cmp_to_key(lambda a, b: a - b))`,
+    highlights: [
+      '<span class="tag algo">Heap</span> Min Heap by default. Max Heap = push/pop <code>-value</code>. Used for Dijkstra, Top K, merge K sorted.',
+      '<span class="tag algo">Binary Search</span> <code>bisect</code> O(log n) – replaces manual implementation, avoids off-by-one bugs.',
+      '<span class="tag algo">Memoization</span> <code>@lru_cache</code> turns recursive DP into O(n) automatically.',
+      '<span class="tag algo">Permutation</span> <code>itertools.permutations/combinations</code> generates standard permutations/combinations, fast.',
+      '<span class="tag algo">Counter</span> Builds frequency map O(n) – foundation for sliding window, anagram, palindrome.',
+      '<span class="tag algo">defaultdict</span> Avoids <code>if key not in dict</code> – cleaner code when grouping elements.',
+    ],
+  },
+
+  misc: {
+    desc: 'Other useful Python tricks.',
+    code: `# zip & enumerate
+for i, val in enumerate(arr):    # index + value
+    print(i, val)
+
+names = ["A", "B"]; scores = [90, 80]
+for n, s in zip(names, scores):  # parallel iteration
+    print(n, s)
+
+# any() / all()
+any([False, True, False])   # True
+all([True, True, False])    # False
+all(3 < x < 10 for x in arr) # generator expression
+
+# Ternary
+x = "yes" if condition else "no"
+
+# Unpacking
+first, *middle, last = [1,2,3,4,5]  # first=1, middle=[2,3,4], last=5
+
+# Copy
+import copy
+b = copy.deepcopy(complex_obj)
+
+# Enumerate with start
+list(enumerate("abc", start=1))  # [(1,'a'), (2,'b'), (3,'c')]
+
+# Multiple assignment
+x = y = z = 0       # same value
+a, b = 1, 2         # tuple unpacking
+
+# Infinity & NaN
+float('inf'); float('-inf'); float('nan')
+
+# Walrus operator (Python 3.8+)
+if (n := len(data)) > 10:
+    print(f"Too many: {n}")`,
+    highlights: ['<span class="tag algo">Algorithm</span> <code>zip()</code> and <code>enumerate()</code> used everywhere for parallel iteration or when you need an index.', '<span class="tag algo">Algorithm</span> <code>any()/all()</code> check conditions on iterables, common in sliding window problems.', '<code>:=</code> (walrus operator) assigns values in expressions – Python 3.8+.'],
+  },
+
+  glossary: [
+    { term: 'LEGB', def: '<strong>L</strong>ocal → <strong>E</strong>nclosing → <strong>G</strong>lobal → <strong>B</strong>uilt-in. The order Python searches for variable names during execution. Understanding LEGB helps avoid <code>UnboundLocalError</code> and debug recursion.' },
+    { term: 'MRO', def: '<strong>M</strong>ethod <strong>R</strong>esolution <strong>O</strong>rder – the order Python searches for methods in multiple inheritance. Uses C3 Linearization algorithm. View with <code>ClassName.mro()</code> or <code>ClassName.__mro__</code>.' },
+    { term: 'O(1) / O(n) / O(log n)', def: '<strong>Big O Notation</strong> – time complexity. <strong>O(1)</strong>: constant (dict lookup), <strong>O(log n)</strong>: logarithmic (binary search), <strong>O(n)</strong>: linear (array traversal), <strong>O(n log n)</strong>: linearithmic (merge sort), <strong>O(n²)</strong>: quadratic (nested loops).' },
+    { term: 'Mutable / Immutable', def: '<strong>Mutable</strong> (changeable): <code>list</code>, <code>dict</code>, <code>set</code>, <code>bytearray</code>. <strong>Immutable</strong> (fixed): <code>int</code>, <code>float</code>, <code>str</code>, <code>tuple</code>, <code>frozenset</code>, <code>bytes</code>. Immutable objects can be used as dict/set keys.' },
+    { term: 'LIFO / FIFO', def: '<strong>LIFO</strong> (Last In, First Out) – Stack, use <code>list.append()</code> + <code>list.pop()</code>. <strong>FIFO</strong> (First In, First Out) – Queue, use <code>collections.deque</code> with <code>append()</code> + <code>popleft()</code>.' },
+    { term: 'Iterable / Iterator', def: '<strong>Iterable</strong>: object that can be looped over (has <code>__iter__()</code>). E.g.: <code>list</code>, <code>tuple</code>, <code>str</code>, <code>dict</code>. <strong>Iterator</strong>: object that yields values sequentially (has <code>__next__()</code>). Use <code>iter()</code> to convert iterable to iterator.' },
+    { term: 'Generator', def: 'A function that uses <code>yield</code> instead of <code>return</code>. Returns a generator object (iterator) that produces values lazily – only computed when needed. Saves memory when processing large data. Shorthand: <code>(x**2 for x in range(n))</code>.' },
+    { term: 'Coroutine', def: 'An async function declared with <code>async def</code>, using <code>await</code> to pause for I/O tasks. Runs on an event loop (not threads). Different from generators: coroutines are consumers, generators are producers.' },
+    { term: 'Decorator', def: 'A wrapper function that wraps another function to add functionality without modifying the original code. Syntax: <code>@decorator_name</code>. Examples: <code>@staticmethod</code>, <code>@lru_cache</code>, <code>@property</code>. Essentially <code>func = decorator(func)</code>.' },
+    { term: 'Context Manager', def: 'An object that manages resources with <code>__enter__()</code> and <code>__exit__()</code> methods. Used with the <code>with</code> statement for automatic cleanup. E.g.: <code>open()</code>, <code>threading.Lock</code>. Create custom ones with <code>contextlib.contextmanager</code>.' },
+    { term: 'Dunder Methods', def: '<strong>D</strong>ouble <strong>Under</strong>score Methods – special methods: <code>__init__</code>, <code>__str__</code>, <code>__repr__</code>, <code>__len__</code>, <code>__getitem__</code>, <code>__lt__</code>, <code>__eq__</code>, <code>__hash__</code>, <code>__call__</code>. Allow objects to interact with Python operators.' },
+    { term: 'Duck Typing', def: '"If it walks like a duck and quacks like a duck, it\'s a duck." Python doesn\'t check types at compile time but relies on behavior (methods/properties). Flexible but requires care when calling non-existent methods.' },
+    { term: 'GIL', def: '<strong>G</strong>lobal <strong>I</strong>nterpreter <strong>L</strong>ock – a mutex in CPython that allows only one thread to execute Python bytecode at a time. Does not affect multi-processing or I/O-bound async code.' },
+    { term: '*args / **kwargs', def: '<code>*args</code>: accepts extra positional arguments as a <code>tuple</code>. <code>**kwargs</code>: accepts extra keyword arguments as a <code>dict</code>. Used in decorators and generic functions. <code>*</code> also unpacks lists/tuples when calling functions.' },
+    { term: 'Memoization', def: 'A technique of caching function results for reuse, avoiding recomputation. In Python, use <code>@functools.lru_cache(maxsize=None)</code>. Turns recursive Fibonacci from O(2ⁿ) to O(n) with a single line.' },
+    { term: 'Hashable', def: 'An object that can be used as a key in <code>dict</code> or an element in <code>set</code>. Must implement <code>__hash__()</code> and <code>__eq__()</code>. Immutable types are hashable by default. Mutable types like <code>list</code>, <code>dict</code> are not.' },
+    { term: 'Closure', def: 'An inner function that remembers variables from its enclosing scope even after the outer function has finished. Use <code>nonlocal</code> to modify enclosing variables. Fundamental to decorators.' },
+    { term: 'Comprehension', def: 'Concise syntax to create <code>list</code>, <code>dict</code>, <code>set</code> from iterables. E.g.: <code>[x**2 for x in range(10) if x % 2 == 0]</code>. Faster than regular for loops as they are implemented at C level.' },
+    { term: 'f-string', def: 'String interpolation syntax from Python 3.6+: <code>f"Hello {name}!"</code>. Faster than <code>.format()</code> and <code>%</code>. Supports expressions: <code>f"{a + b = }"</code> (Python 3.8+).' },
+    { term: 'Walrus Operator (:=)', def: 'Assignment expression operator (Python 3.8+). Allows assignment and testing in one line: <code>if (n := len(data)) > 10:</code>. Useful in while loops and list comprehensions.' },
+    { term: 'Type Hint', def: 'Type annotations (Python 3.5+): <code>def f(x: int) -> str:</code>. Does not enforce types at runtime but helps IDE autocomplete, static type checkers (mypy), and documents code more clearly.' },
+    { term: 'Pickle / JSON', def: '<strong>pickle</strong>: serializes Python objects to bytes (binary), used for caching, saving ML models. <strong>json</strong>: serializes to JSON strings (text), cross-language compatible. Always prefer JSON for cross-platform needs.' },
+    { term: 'import vs from import', def: '<code>import module</code>: imports entire module, accessed via <code>module.name</code>. <code>from module import name</code>: imports directly into namespace, convenient but risks name collisions. Avoid <code>from module import *</code>.' },
+    { term: '__name__ == "__main__"', def: 'A guard block that runs code only when the file is executed directly, not when imported. Always place main logic inside this block so the module can be imported safely.' },
+    { term: 'DRY / KISS', def: '<strong>DRY</strong>: Don\'t Repeat Yourself – avoid code duplication with functions/modules. <strong>KISS</strong>: Keep It Simple, Stupid – keep code simple and readable. Core principles in Pythonic coding.' },
+  ],
+};
+
+// ============================================================================
+// SYNTAX HIGHLIGHTING
+// ============================================================================
+function highlightPython(code) {
+  let escaped = code
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+
+  const ph = [];
+  let idx = 0;
+
+  // 1. Docstrings ("""...""" or '''...''')
+  escaped = escaped.replace(/"""[\s\S]*?"""|'''[\s\S]*?'''/g, function(m) {
+    ph.push('<span class="syn-string">' + m + '</span>');
+    return '\x00PH' + (idx++) + 'PH\x00';
+  });
+
+  // 2. Single-line comments (# ...)
+  escaped = escaped.replace(/(^|\s)(#[^\n]*)/gm, function(_, sp, comment) {
+    ph.push(sp + '<span class="syn-comment">' + comment + '</span>');
+    return '\x00PH' + (idx++) + 'PH\x00';
+  });
+
+  // 3. Regular strings (f"", b"", r"", "", '')
+  escaped = escaped.replace(/[bfru]?"(?:[^"\\\n]|\\.)*"|[bfru]?'(?:[^'\\\n]|\\.)*'/g, function(m) {
+    ph.push('<span class="syn-string">' + m + '</span>');
+    return '\x00PH' + (idx++) + 'PH\x00';
+  });
+
+  // 4. Decorators
+  escaped = escaped.replace(/@(\w+)/g, '<span class="syn-decorator">@$1</span>');
+
+  // 5. Keywords
+  escaped = escaped.replace(/\b(def|class|return|if|elif|else|for|while|try|except|finally|with|import|from|as|yield|pass|break|continue|raise|in|not|and|or|is|lambda|global|nonlocal|del|assert|async|await)\b/g, '<span class="syn-keyword">$1</span>');
+
+  // 6. Booleans / None
+  escaped = escaped.replace(/\b(True|False|None)\b/g, '<span class="syn-boolean">$1</span>');
+
+  // 7. Built-in functions / classes
+  escaped = escaped.replace(/\b(print|len|range|type|isinstance|sorted|list|dict|set|tuple|int|float|str|bool|map|filter|reduce|zip|enumerate|any|all|open|super|iter|next|chr|ord|sum|max|min|abs|round|reversed|slice|property|staticmethod|classmethod|hasattr|getattr|setattr|id|hash|repr|callable|issubclass|input|eval|exec|pow|divmod|bin|hex|oct|format|vars|dir|locals|globals|object|memoryview|bytearray|bytes|complex|frozenset|Counter|deque|defaultdict|OrderedDict|heapify|heappush|heappop|nlargest|nsmallest|bisect|bisect_left|bisect_right|insort|permutations|combinations|product|count|cycle|repeat|accumulate|chain|groupby|lru_cache|cmp_to_key|wraps|deepcopy|StopIteration|ZeroDivisionError|ValueError|TypeError|RuntimeError|BaseException|Exception|KeyError|Path|TypeVar|aiofiles)\b/g, '<span class="syn-builtin">$1</span>');
+
+  // 8. self / cls
+  escaped = escaped.replace(/\b(self|cls)\b/g, '<span class="syn-self">$1</span>');
+
+  // 9. Dunder methods
+  escaped = escaped.replace(/(__\w+__)/g, '<span class="syn-dunder">$1</span>');
+
+  // 10. Numbers
+  escaped = escaped.replace(/\b(\d+\.?\d*(?:[eE][+-]?\d+)?)\b/g, '<span class="syn-number">$1</span>');
+
+  // Restore placeholders
+  escaped = escaped.replace(/\x00PH(\d+)PH\x00/g, function(_, i) { return ph[parseInt(i)]; });
+
+  return escaped;
+}
+
+// ============================================================================
+// SECTIONS DEFINITION
+// ============================================================================
+const sections = [
+  { id: 'intro',      dataKey: null,              navKey: 'navIntro'          },
+  { id: 'basics',     dataKey: 'basics',          navKey: 'navBasics'         },
+  { id: 'functions',  dataKey: 'functions',       navKey: 'navFunctions'      },
+  { id: 'data-structures', dataKey: 'data_structures', navKey: 'navDataStructures' },
+  { id: 'strings',    dataKey: 'strings',         navKey: 'navStrings'        },
+  { id: 'oop',        dataKey: 'oop',             navKey: 'navOOP'            },
+  { id: 'comprehensions', dataKey: 'comprehensions', navKey: 'navComprehensions' },
+  { id: 'lambda',     dataKey: 'lambda_map',      navKey: 'navLambda'         },
+  { id: 'iterators',  dataKey: 'iterators',       navKey: 'navIterators'      },
+  { id: 'decorators', dataKey: 'decorators',      navKey: 'navDecorators'     },
+  { id: 'modules',    dataKey: 'modules',         navKey: 'navModules'        },
+  { id: 'exceptions', dataKey: 'exceptions',      navKey: 'navExceptions'     },
+  { id: 'files',      dataKey: 'files',           navKey: 'navFiles'          },
+  { id: 'typing',     dataKey: 'typing',          navKey: 'navTyping'         },
+  { id: 'async',      dataKey: 'async',           navKey: 'navAsync'          },
+  { id: 'algo',       dataKey: 'algo',            navKey: 'navAlgo'           },
+  { id: 'misc',       dataKey: 'misc',            navKey: 'navMisc'           },
+  { id: 'glossary',   dataKey: 'glossary',        navKey: 'navGlossary'       },
+];
+
+// ============================================================================
+// RUNTIME
+// ============================================================================
+let currentLang = 'vi';
+
+function t(key) {
+  return langData[currentLang]?.[key] || key;
+}
+
+function renderNav() {
+  const links = sections.map(function(sec) {
+    return '<a href="#' + sec.id + '" data-section="' + sec.id + '">' + t(sec.navKey) + '</a>';
+  });
+  document.getElementById('nav-links').innerHTML = links.join('');
+}
+
+function renderSection(sec) {
+  if (!sec.dataKey) return '';
+  var d = langData[currentLang][sec.dataKey];
+  if (!d) return '';
+
+  var html = '<section id="' + sec.id + '"><h2>' + t('sec' + sec.dataKey.charAt(0).toUpperCase() + sec.dataKey.slice(1)) + '</h2>';
+
+  if (sec.dataKey === 'glossary') {
+    html += '<div class="glossary-grid">';
+    d.forEach(function(item) {
+      html += '<div class="glossary-card">';
+      html += '<div class="glossary-term">' + item.term + '</div>';
+      html += '<div class="glossary-def">' + item.def + '</div>';
+      html += '</div>';
+    });
+    html += '</div>';
+  } else {
+    if (d.desc) html += '<p>' + d.desc + '</p>';
+    if (d.code) html += '<pre><code>' + highlightPython(d.code) + '</code></pre>';
+    if (d.highlights) {
+      html += '<div class="highlight"><strong>' + (currentLang === 'vi' ? 'Lưu ý' : 'Notes') + ':</strong><ul style="margin-top:6px;">';
+      d.highlights.forEach(function(h) { html += '<li>' + h + '</li>'; });
+      html += '</ul></div>';
+    }
+  }
+  html += '</section>';
+  return html;
+}
+
+function renderAll() {
+  var html = '';
+
+  // Intro section
+  html += '<section id="intro">';
+  html += '<h2>' + t('introTitle') + '</h2>';
+  html += '<p>' + t('introText') + '</p>';
+  html += '<h3 style="margin-top:20px;">' + t('introWhyTitle') + '</h3>';
+  html += '<div class="intro-grid">';
+  (langData[currentLang].introWhy || []).forEach(function(c) {
+    html += '<div class="intro-card"><h3>' + c.h + '</h3><p>' + c.p + '</p></div>';
+  });
+  html += '</div>';
+  html += '<h3 style="margin-top:20px;">' + t('introFutureTitle') + '</h3>';
+  html += '<ul>';
+  (langData[currentLang].introFuture || []).forEach(function(item) { html += '<li>' + item + '</li>'; });
+  html += '</ul>';
+  html += '</section>';
+
+  // Remaining sections
+  for (var i = 1; i < sections.length; i++) {
+    html += renderSection(sections[i]);
+  }
+
+  document.getElementById('content').innerHTML = html;
+  document.getElementById('footer').innerHTML = '<p>' + t('footer') + '</p>';
+}
+
+function setLang(lang) {
+  currentLang = lang;
+  document.getElementById('btn-vi').classList.toggle('active', lang === 'vi');
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  renderAll();
+  renderNav();
+  localStorage.setItem('python-cheatsheet-lang', lang);
+}
+
+function toggleTheme() {
+  var body = document.body;
+  var isDark = body.getAttribute('data-theme') === 'dark';
+  body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  document.getElementById('btn-theme').textContent = isDark ? '🌙 Dark' : '☀️ Light';
+  localStorage.setItem('python-cheatsheet-theme', isDark ? 'light' : 'dark');
+}
+
+// Init
+(function() {
+  renderNav();
+  var savedLang = localStorage.getItem('python-cheatsheet-lang');
+  if (savedLang === 'en') setLang('en'); else setLang('vi');
+
+  var savedTheme = localStorage.getItem('python-cheatsheet-theme');
+  if (savedTheme === 'dark') {
+    document.body.setAttribute('data-theme', 'dark');
+    document.getElementById('btn-theme').textContent = '☀️ Light';
+  }
+})();
+
+// Active nav on scroll
+window.addEventListener('scroll', function() {
+  var links = document.querySelectorAll('.nav-links a');
+  var current = '';
+  document.querySelectorAll('section[id]').forEach(function(sec) {
+    if (sec.getBoundingClientRect().top <= 100) current = sec.id;
+  });
+  links.forEach(function(a) { a.classList.toggle('active', a.getAttribute('data-section') === current); });
+});
+</script>
+</body>
+</html>
